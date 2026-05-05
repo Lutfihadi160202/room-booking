@@ -3,149 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Booking Pro | Enterprise Edition</title>
-    <!-- Bootstrap 5 & Google Fonts -->
+    <title>RoomMaster Pro | Management System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f7fa; color: #2d3748; }
-        .header-section { background: linear-gradient(135deg, #0d6efd 0%, #003d99 100%); border-radius: 20px; padding: 40px 20px; color: white; margin-bottom: -60px; position: relative; z-index: 1; }
-        .main-card { border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); background: #ffffff; }
-        .stat-card { border: none; border-radius: 15px; transition: transform 0.3s; }
-        .stat-card:hover { transform: translateY(-5px); }
-        .btn-primary { border-radius: 12px; padding: 12px; font-weight: 700; background: #0d6efd; border: none; }
-        .form-control, .form-select { border-radius: 10px; padding: 10px; border: 1px solid #e2e8f0; font-size: 0.9rem; }
-        .badge-info-custom { background: #e0eaff; color: #0d6efd; border-radius: 6px; padding: 4px 8px; font-size: 0.75rem; font-weight: 600; }
-        .time-label { font-size: 0.75rem; color: #64748b; margin-bottom: 2px; display: block; font-weight: 600; }
-        .search-box { position: relative; }
-        .search-box i { position: absolute; left: 15px; top: 13px; color: #94a3b8; }
-        .search-box input { padding-left: 40px; border-radius: 25px; }
+        :root { --primary: #4361ee; --secondary: #3f37c9; --success: #4cc9f0; --bg: #f8f9fe; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: #2b2d42; }
+        
+        /* Navbar & Header */
+        .glass-nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); sticky: top; z-index: 1000; }
+        .hero-gradient { background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 24px; padding: 50px 30px; color: white; margin-bottom: 40px; box-shadow: 0 20px 40px rgba(67, 97, 238, 0.2); }
+        
+        /* Cards */
+        .stat-card { border: none; border-radius: 20px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: white; }
+        .stat-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+        .main-card { border: none; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.03); background: white; }
+        
+        /* Forms */
+        .form-control, .form-select { border-radius: 12px; padding: 12px 16px; border: 1.5px solid #edf2f7; background: #fcfdfe; transition: all 0.2s; }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1); background: white; }
+        
+        /* Buttons */
+        .btn-primary { background: var(--primary); border: none; border-radius: 14px; padding: 14px 28px; font-weight: 700; transition: all 0.3s; }
+        .btn-primary:hover { background: var(--secondary); transform: scale(1.02); box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3); }
+        
+        /* Table */
+        .table { border-collapse: separate; border-spacing: 0 12px; }
+        .table thead th { border: none; color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; padding: 0 20px; }
+        .table tbody tr { background: white; border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
+        .table tbody td { padding: 20px; border: none; vertical-align: middle; }
+        .table tbody tr td:first-child { border-radius: 16px 0 0 16px; }
+        .table tbody tr td:last-child { border-radius: 0 16px 16px 0; }
+        
+        .badge-room { background: #eef2ff; color: #4361ee; font-weight: 700; padding: 6px 12px; border-radius: 8px; }
     </style>
 </head>
 <body>
-    <div class="container py-5">
-        <div class="header-section shadow-lg text-center">
-            <h2 class="fw-bold mb-1"><i class="fas fa-building me-2"></i>Sistem Booking & Fasilitas</h2>
-            <p class="opacity-75 mb-0 text-white">Manajemen reservasi dengan detail kapasitas dan waktu</p>
+
+    <nav class="navbar glass-nav sticky-top mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="#"><i class="fas fa-cube me-2"></i>RoomMaster Pro</a>
+            <button class="btn btn-outline-primary btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modalRuangan">
+                <i class="fas fa-plus-circle me-1"></i> Kelola Ruangan
+            </button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero-gradient text-center">
+            <h1 class="fw-bold display-5">Modern Booking System</h1>
+            <p class="lead opacity-75">Kelola reservasi gedung dan fasilitas kantor dalam satu dashboard cerdas.</p>
         </div>
 
-        <div class="row g-3 pt-5 mt-4 mb-4">
+        <div class="row g-4 mb-5 text-center">
             <div class="col-md-4">
-                <div class="card stat-card bg-primary text-white shadow-sm h-100">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="flex-grow-1">
-                            <h6 class="small fw-bold opacity-75">TOTAL BOOKING</h6>
-                            <h3 class="fw-bold m-0" id="statTotal">0</h3>
-                        </div>
-                        <i class="fas fa-book-open fa-2x opacity-25"></i>
+                <div class="card stat-card p-3">
+                    <div class="card-body">
+                        <div class="text-primary mb-2"><i class="fas fa-calendar-check fa-2x"></i></div>
+                        <h6 class="text-muted small fw-bold">TOTAL BOOKING</h6>
+                        <h2 class="fw-bold" id="statTotal">0</h2>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card stat-card bg-warning text-dark shadow-sm h-100">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="flex-grow-1">
-                            <h6 class="small fw-bold opacity-75">STATUS MENUNGGU</h6>
-                            <h3 class="fw-bold m-0" id="statPending">0</h3>
-                        </div>
-                        <i class="fas fa-hourglass-half fa-2x opacity-25"></i>
+                <div class="card stat-card p-3">
+                    <div class="card-body">
+                        <div class="text-warning mb-2"><i class="fas fa-clock fa-2x"></i></div>
+                        <h6 class="text-muted small fw-bold">SEDANG BERJALAN</h6>
+                        <h2 class="fw-bold" id="statToday">0</h2>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card stat-card bg-success text-white shadow-sm h-100">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="flex-grow-1">
-                            <h6 class="small fw-bold opacity-75">AGENDA HARI INI</h6>
-                            <h3 class="fw-bold m-0" id="statToday">0</h3>
-                        </div>
-                        <i class="fas fa-calendar-check fa-2x opacity-25"></i>
+                <div class="card stat-card p-3">
+                    <div class="card-body">
+                        <div class="text-success mb-2"><i class="fas fa-door-open fa-2x"></i></div>
+                        <h6 class="text-muted small fw-bold">RUANG TERSEDIA</h6>
+                        <h2 class="fw-bold" id="statRooms">0</h2>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row g-4">
+            <!-- Sidebar Booking -->
             <div class="col-lg-4">
-                <div class="card main-card h-100">
-                    <div class="card-body p-4">
-                        <h5 class="fw-bold mb-4 border-bottom pb-2 text-primary">Buat Reservasi</h5>
-                        <form id="bookingForm">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold small">Nama Peminjam</label>
-                                <input type="text" id="nama" class="form-control shadow-sm" placeholder="Nama Lengkap" required>
+                <div class="card main-card p-4">
+                    <h5 class="fw-bold mb-4 text-dark"><i class="fas fa-pen-nib me-2 text-primary"></i>Reservasi Baru</h5>
+                    <form id="bookingForm">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Nama Lengkap</label>
+                            <input type="text" id="nama" class="form-control" placeholder="Siapa yang meminjam?" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Pilih Ruangan</label>
+                            <select id="ruangan" class="form-select" required></select>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="small fw-bold text-muted">Mulai</label>
+                                <input type="date" id="tglMulai" class="form-control" required>
+                                <input type="time" id="jamMulai" class="form-control mt-2" required>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold small">Pilih Ruangan</label>
-                                <select id="ruangan" class="form-select shadow-sm">
-                                    <option value="Ruang Alpha" data-cap="10" data-fas="Projector, AC, Board">Ruang Alpha (Lantai 1)</option>
-                                    <option value="Ruang Beta" data-cap="25" data-fas="Smart TV, Sound, AC">Ruang Beta (Lantai 2)</option>
-                                    <option value="Ruang Gamma" data-cap="50" data-fas="LED Screen, Mic, AC">Ruang Gamma (VVIP)</option>
-                                </select>
+                            <div class="col-6">
+                                <label class="small fw-bold text-muted">Selesai</label>
+                                <input type="date" id="tglSelesai" class="form-control" required>
+                                <input type="time" id="jamSelesai" class="form-control mt-2" required>
                             </div>
-                            <div class="row g-2 mb-3">
-                                <div class="col-6">
-                                    <span class="time-label">Tgl Mulai</span>
-                                    <input type="date" id="tglMulai" class="form-control shadow-sm" required>
-                                </div>
-                                <div class="col-6">
-                                    <span class="time-label">Tgl Selesai</span>
-                                    <input type="date" id="tglSelesai" class="form-control shadow-sm" required>
-                                </div>
-                            </div>
-                            <div class="row g-2 mb-4">
-                                <div class="col-6">
-                                    <span class="time-label">Jam Mulai</span>
-                                    <input type="time" id="jamMulai" class="form-control shadow-sm" required>
-                                </div>
-                                <div class="col-6">
-                                    <span class="time-label">Jam Selesai</span>
-                                    <input type="time" id="jamSelesai" class="form-control shadow-sm" required>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100 shadow-sm">
-                                <i class="fas fa-paper-plane me-2"></i>Konfirmasi Booking
-                            </button>
-                        </form>
-                    </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 mt-3">
+                            Konfirmasi Jadwal <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
 
+            <!-- List Table -->
             <div class="col-lg-8">
-                <div class="card main-card h-100">
-                    <div class="card-body p-4">
-                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
-                            <h5 class="fw-bold m-0 text-secondary">Daftar Jadwal Kantor</h5>
-                            <button onclick="downloadExcel()" class="btn btn-success rounded-pill px-4 fw-bold shadow-sm">
-                                <i class="fas fa-file-excel me-2"></i>Export Excel
-                            </button>
-                        </div>
-                        <div class="search-box mb-4">
-                            <i class="fas fa-search"></i>
-                            <input type="text" id="cariNama" class="form-control shadow-sm" placeholder="Cari peminjam..." onkeyup="filterData()">
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle">
-                                <thead class="table-light small">
-                                    <tr>
-                                        <th>PEMINJAM</th>
-                                        <th>RUANGAN & FASILITAS</th>
-                                        <th>WAKTU & DURASI</th>
-                                        <th class="text-center">AKSI</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="daftarBooking"></tbody>
-                            </table>
-                        </div>
+                <div class="card main-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold m-0">Jadwal Penggunaan Ruang</h5>
+                        <button onclick="downloadExcel()" class="btn btn-light btn-sm fw-bold">
+                            <i class="fas fa-file-export me-1"></i> Export
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Peminjam</th>
+                                    <th>Ruangan</th>
+                                    <th>Waktu</th>
+                                    <th class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="daftarBooking"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Script terpisah -->
+
+    <!-- MODAL KELOLA RUANGAN -->
+    <div class="modal fade" id="modalRuangan" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content border-0 rounded-4">
+                <div class="modal-header border-0 p-4">
+                    <h5 class="fw-bold m-0">Master Data Ruangan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 pt-0">
+                    <form id="roomForm" class="row g-3 mb-4 p-3 bg-light rounded-3">
+                        <div class="col-md-4">
+                            <input type="text" id="masterRuangan" class="form-control" placeholder="Nama Ruangan" required>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" id="masterKapasitas" class="form-control" placeholder="Kapasitas" required>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="masterFasilitas" class="form-control" placeholder="Fasilitas (AC, TV)" required>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </form>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead class="bg-white">
+                                <tr>
+                                    <th>Nama Ruangan</th>
+                                    <th>Kapasitas</th>
+                                    <th>Fasilitas</th>
+                                    <th>Hapus</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listMasterRuangan"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
