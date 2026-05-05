@@ -17,7 +17,7 @@ bookingForm.addEventListener('submit', function(e) {
         nama: document.getElementById('nama').value,
         ruangan: document.getElementById('ruangan').value,
         tanggal: document.getElementById('tanggal').value,
-        status: 'Menunggu' // Status default untuk admin
+        status: 'Menunggu' 
     };
 
     // 1. Kirim data ke Google Sheets
@@ -28,18 +28,18 @@ bookingForm.addEventListener('submit', function(e) {
         body: JSON.stringify(data)
     })
     .then(() => {
-        // 2. Simpan di LocalStorage agar muncul di tabel lokal
+        // 2. Simpan di LocalStorage
         let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
         bookings.push(data);
         localStorage.setItem('bookings', JSON.stringify(bookings));
         
-        alert('Sukses! Permintaan booking sudah terkirim ke Google Sheets kantor.');
+        alert('Sukses! Data telah tersinkron dengan Google Sheets kantor.');
         bookingForm.reset();
         tampilkanData();
     })
     .catch(error => {
         console.error('Error!', error.message);
-        alert('Gagal mengirim! Pastikan koneksi internet aktif.');
+        alert('Gagal mengirim! Periksa koneksi internet Anda.');
     })
     .finally(() => {
         btn.innerHTML = 'Booking Sekarang';
@@ -47,7 +47,6 @@ bookingForm.addEventListener('submit', function(e) {
     });
 });
 
-// Fungsi Menampilkan Data ke Tabel
 function tampilkanData() {
     let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
     daftarTable.innerHTML = '';
@@ -55,7 +54,7 @@ function tampilkanData() {
     bookings.forEach((item, index) => {
         daftarTable.innerHTML += `
             <tr>
-                <td class="fw-bold">${item.nama}</td>
+                <td class="fw-bold text-dark">${item.nama}</td>
                 <td><span class="badge bg-info text-dark">${item.ruangan}</span></td>
                 <td>${item.tanggal}</td>
                 <td><span class="badge bg-warning text-dark">Menunggu</span></td>
@@ -67,7 +66,6 @@ function tampilkanData() {
     });
 }
 
-// Fungsi Pencarian (Filter)
 function filterData() {
     let input = document.getElementById('cariNama').value.toLowerCase();
     let rows = daftarTable.getElementsByTagName('tr');
@@ -82,12 +80,40 @@ function filterData() {
     }
 }
 
-// Fungsi Hapus Lokal
 function hapusData(index) {
-    if (confirm("Hapus tampilan booking ini? (Data di Google Sheets admin tetap tersimpan)")) {
+    if (confirm("Hapus dari tampilan tabel? (Data di Google Sheets tetap aman)")) {
         let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
         bookings.splice(index, 1);
         localStorage.setItem('bookings', JSON.stringify(bookings));
         tampilkanData();
     }
+}
+
+// FUNGSI BARU: Download Laporan ke Excel (CSV format)
+function downloadExcel() {
+    let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+    if (bookings.length === 0) {
+        alert("Belum ada data untuk di-download.");
+        return;
+    }
+
+    // Header Kolom
+    let csvContent = "Nama,Ruangan,Tanggal,Status\n";
+
+    // Isi Data
+    bookings.forEach(item => {
+        let row = `${item.nama},${item.ruangan},${item.tanggal},${item.status}`;
+        csvContent += row + "\n";
+    });
+
+    // Proses Download
+    let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    let link = document.createElement("a");
+    let url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "Laporan_Booking_Ruangan.csv");
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
