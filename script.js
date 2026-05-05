@@ -1,48 +1,56 @@
 const bookingForm = document.getElementById('bookingForm');
 const daftarTable = document.getElementById('daftarBooking');
 
-// Menjalankan fungsi tampilkanData saat halaman pertama kali dimuat
+// URL sudah diperbaiki (spasi di ujung sudah dihapus)
+const scriptURL = 'https://script.google.com/macros/s/AKfycby9yG2ivGODdSAzLLS8fHJM9U82mf4sJRnjbtg7GL_AQbNyZSoT3OgNzckAdMQZ9Qa9/exec';
+
 document.addEventListener('DOMContentLoaded', tampilkanData);
 
-// Logika saat tombol "Booking Sekarang" diklik
 bookingForm.addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const nama = document.getElementById('nama').value;
-    const ruangan = document.getElementById('ruangan').value;
-    const tanggal = document.getElementById('tanggal').value;
-
-    // VALIDASI: Cek apakah tanggal yang dipilih sudah lewat dari hari ini
-    const today = new Error().stack ? new Date().toISOString().split('T')[0] : ""; 
-    const tglHariIni = new Date().setHours(0,0,0,0);
-    const tglPilihan = new Date(tanggal).setHours(0,0,0,0);
-
-    if (tglPilihan < tglHariIni) {
-        alert("Waduh! Kamu tidak bisa memesan ruangan untuk tanggal yang sudah lewat.");
-        return;
-    }
+    const btn = e.target.querySelector('button');
+    btn.innerHTML = 'Sedang Mengirim...';
+    btn.disabled = true;
 
     const data = {
-        nama: nama,
-        ruangan: ruangan,
-        tanggal: tanggal
+        nama: document.getElementById('nama').value,
+        ruangan: document.getElementById('ruangan').value,
+        tanggal: document.getElementById('tanggal').value
     };
 
-    // Simpan ke LocalStorage
-    let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-    bookings.push(data);
-    localStorage.setItem('bookings', JSON.stringify(bookings));
-    
-    // Reset form dan refresh tabel
-    bookingForm.reset();
-    tampilkanData();
+    // Kirim data menggunakan format No-Cors agar tidak terhalang keamanan browser
+    fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors', // Tambahan agar lebih lancar
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(() => {
+        // Karena pakai 'no-cors', kita langsung anggap berhasil jika tidak ada error network
+        let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+        bookings.push(data);
+        localStorage.setItem('bookings', JSON.stringify(bookings));
+        
+        alert('Sukses! Data telah dikirim ke kantor (Google Sheets).');
+        bookingForm.reset();
+        tampilkanData();
+    })
+    .catch(error => {
+        console.error('Error!', error.message);
+        alert('Gagal! Cek koneksi atau pastikan URL Script sudah benar.');
+    })
+    .finally(() => {
+        btn.innerHTML = 'Booking Sekarang';
+        btn.disabled = false;
+    });
 });
 
-// Fungsi untuk menampilkan daftar booking ke tabel HTML
 function tampilkanData() {
     let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
     daftarTable.innerHTML = '';
-    
     bookings.forEach((item, index) => {
         daftarTable.innerHTML += `
             <tr>
@@ -57,12 +65,11 @@ function tampilkanData() {
     });
 }
 
-// Fungsi untuk menghapus data tertentu
 function hapusData(index) {
-    if (confirm("Apakah kamu yakin ingin menghapus pesanan ini?")) {
+    if (confirm("Hapus dari daftar tampilan? (Data asli di Google Sheets tetap aman)")) {
         let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-        bookings.splice(index, 1); // Menghapus data berdasarkan urutannya
+        bookings.splice(index, 1);
         localStorage.setItem('bookings', JSON.stringify(bookings));
-        tampilkanData(); // Refresh tabel
+        tampilkanData();
     }
 }
