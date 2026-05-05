@@ -11,52 +11,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #f4f7fa; 
-            color: #2d3748;
-        }
-        .header-section { 
-            background: linear-gradient(135deg, #0d6efd 0%, #003d99 100%); 
-            border-radius: 20px; 
-            padding: 40px 20px; 
-            color: white; 
-            margin-bottom: -60px; 
-            position: relative; 
-            z-index: 1; 
-        }
-        .main-card { 
-            border: none; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
-            background: #ffffff; 
-        }
-        .stat-card { 
-            border: none; 
-            border-radius: 15px; 
-            transition: transform 0.3s; 
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f7fa; color: #2d3748; }
+        .header-section { background: linear-gradient(135deg, #0d6efd 0%, #003d99 100%); border-radius: 20px; padding: 40px 20px; color: white; margin-bottom: -60px; position: relative; z-index: 1; }
+        .main-card { border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); background: #ffffff; }
+        .stat-card { border: none; border-radius: 15px; transition: transform 0.3s; }
         .stat-card:hover { transform: translateY(-5px); }
-        .btn-primary { 
-            border-radius: 12px; 
-            padding: 12px; 
-            font-weight: 700; 
-            background: #0d6efd; 
-            border: none; 
-            transition: 0.3s;
-        }
-        .btn-primary:hover { background: #0056b3; transform: scale(1.01); }
-        .form-control, .form-select { 
-            border-radius: 10px; 
-            padding: 12px; 
-            border: 1px solid #e2e8f0; 
-        }
-        .badge-status { 
-            padding: 6px 12px; 
-            border-radius: 8px; 
-            font-weight: 600; 
-            font-size: 0.8rem; 
-        }
+        .btn-primary { border-radius: 12px; padding: 12px; font-weight: 700; background: #0d6efd; border: none; }
+        .form-control, .form-select { border-radius: 10px; padding: 10px; border: 1px solid #e2e8f0; font-size: 0.9rem; }
+        .badge-info-custom { background: #e0eaff; color: #0d6efd; border-radius: 6px; padding: 4px 8px; font-size: 0.75rem; font-weight: 600; }
+        .time-label { font-size: 0.75rem; color: #64748b; margin-bottom: 2px; display: block; font-weight: 600; }
         .search-box { position: relative; }
         .search-box i { position: absolute; left: 15px; top: 13px; color: #94a3b8; }
         .search-box input { padding-left: 40px; border-radius: 25px; }
@@ -64,13 +27,11 @@
 </head>
 <body>
     <div class="container py-5">
-        <!-- Header -->
         <div class="header-section shadow-lg text-center">
-            <h2 class="fw-bold mb-1"><i class="fas fa-building me-2"></i>Sistem Booking Ruang Meeting</h2>
-            <p class="opacity-75 mb-0 text-white">Kelola reservasi rapat kantor dengan efisien dan profesional</p>
+            <h2 class="fw-bold mb-1"><i class="fas fa-building me-2"></i>Sistem Booking & Fasilitas</h2>
+            <p class="opacity-75 mb-0 text-white">Manajemen reservasi dengan detail kapasitas dan waktu</p>
         </div>
 
-        <!-- Dashboard Stats -->
         <div class="row g-3 pt-5 mt-4 mb-4">
             <div class="col-md-4">
                 <div class="card stat-card bg-primary text-white shadow-sm h-100">
@@ -107,9 +68,7 @@
             </div>
         </div>
 
-        <!-- Form & Table Content -->
         <div class="row g-4">
-            <!-- Sidebar Form -->
             <div class="col-lg-4">
                 <div class="card main-card h-100">
                     <div class="card-body p-4">
@@ -117,19 +76,35 @@
                         <form id="bookingForm">
                             <div class="mb-3">
                                 <label class="form-label fw-bold small">Nama Peminjam</label>
-                                <input type="text" id="nama" class="form-control shadow-sm" placeholder="Masukkan nama Anda" required>
+                                <input type="text" id="nama" class="form-control shadow-sm" placeholder="Nama Lengkap" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold small">Pilih Ruangan</label>
                                 <select id="ruangan" class="form-select shadow-sm">
-                                    <option>Ruang Alpha (Lantai 1)</option>
-                                    <option>Ruang Beta (Lantai 2)</option>
-                                    <option>Ruang Gamma (VVIP)</option>
+                                    <option value="Ruang Alpha" data-cap="10" data-fas="Projector, AC, Board">Ruang Alpha (Lantai 1)</option>
+                                    <option value="Ruang Beta" data-cap="25" data-fas="Smart TV, Sound, AC">Ruang Beta (Lantai 2)</option>
+                                    <option value="Ruang Gamma" data-cap="50" data-fas="LED Screen, Mic, AC">Ruang Gamma (VVIP)</option>
                                 </select>
                             </div>
-                            <div class="mb-4">
-                                <label class="form-label fw-bold small">Tanggal Rapat</label>
-                                <input type="date" id="tanggal" class="form-control shadow-sm" required>
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <span class="time-label">Tgl Mulai</span>
+                                    <input type="date" id="tglMulai" class="form-control shadow-sm" required>
+                                </div>
+                                <div class="col-6">
+                                    <span class="time-label">Tgl Selesai</span>
+                                    <input type="date" id="tglSelesai" class="form-control shadow-sm" required>
+                                </div>
+                            </div>
+                            <div class="row g-2 mb-4">
+                                <div class="col-6">
+                                    <span class="time-label">Jam Mulai</span>
+                                    <input type="time" id="jamMulai" class="form-control shadow-sm" required>
+                                </div>
+                                <div class="col-6">
+                                    <span class="time-label">Jam Selesai</span>
+                                    <input type="time" id="jamSelesai" class="form-control shadow-sm" required>
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-primary w-100 shadow-sm">
                                 <i class="fas fa-paper-plane me-2"></i>Konfirmasi Booking
@@ -139,30 +114,26 @@
                 </div>
             </div>
 
-            <!-- Table Section -->
             <div class="col-lg-8">
                 <div class="card main-card h-100">
                     <div class="card-body p-4">
                         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
-                            <h5 class="fw-bold m-0 text-secondary">Daftar Reservasi Kantor</h5>
+                            <h5 class="fw-bold m-0 text-secondary">Daftar Jadwal Kantor</h5>
                             <button onclick="downloadExcel()" class="btn btn-success rounded-pill px-4 fw-bold shadow-sm">
-                                <i class="fas fa-file-excel me-2"></i>Download Excel
+                                <i class="fas fa-file-excel me-2"></i>Export Excel
                             </button>
                         </div>
-                        
                         <div class="search-box mb-4">
                             <i class="fas fa-search"></i>
-                            <input type="text" id="cariNama" class="form-control shadow-sm" placeholder="Cari nama peminjam..." onkeyup="filterData()">
+                            <input type="text" id="cariNama" class="form-control shadow-sm" placeholder="Cari peminjam..." onkeyup="filterData()">
                         </div>
-
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
                                 <thead class="table-light small">
                                     <tr>
                                         <th>PEMINJAM</th>
-                                        <th>RUANGAN</th>
-                                        <th>TANGGAL</th>
-                                        <th>STATUS</th>
+                                        <th>RUANGAN & FASILITAS</th>
+                                        <th>WAKTU & DURASI</th>
                                         <th class="text-center">AKSI</th>
                                     </tr>
                                 </thead>
@@ -174,6 +145,7 @@
             </div>
         </div>
     </div>
+    <!-- Script terpisah -->
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,115 +1,92 @@
 const bookingForm = document.getElementById('bookingForm');
 const daftarTable = document.getElementById('daftarBooking');
-
-// URL Google Apps Script Anda
 const scriptURL = 'https://script.google.com/macros/s/AKfycby9yG2ivGODdSAzLLS8fHJM9U82mf4sJRnjbtg7GL_AQbNyZSoT3OgNzckAdMQZ9Qa9/exec';
 
 document.addEventListener('DOMContentLoaded', tampilkanData);
 
 bookingForm.addEventListener('submit', function(e) {
     e.preventDefault();
+    const sel = document.getElementById('ruangan');
+    const opt = sel.options[sel.selectedIndex];
     
     const btn = e.target.querySelector('button');
-    const originalContent = btn.innerHTML;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Memproses...';
     btn.disabled = true;
 
     const data = {
         nama: document.getElementById('nama').value,
-        ruangan: document.getElementById('ruangan').value,
-        tanggal: document.getElementById('tanggal').value,
-        status: 'Menunggu' 
+        ruangan: sel.value,
+        kapasitas: opt.getAttribute('data-cap'),
+        fasilitas: opt.getAttribute('data-fas'),
+        tglMulai: document.getElementById('tglMulai').value,
+        tglSelesai: document.getElementById('tglSelesai').value,
+        jamMulai: document.getElementById('jamMulai').value,
+        jamSelesai: document.getElementById('jamSelesai').value,
+        status: 'Confirmed' 
     };
 
-    // Kirim data ke Google Sheets
-    fetch(scriptURL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    })
+    fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) })
     .then(() => {
-        let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-        bookings.unshift(data); // Tambah ke atas
-        localStorage.setItem('bookings', JSON.stringify(bookings));
-        
+        let bookings = JSON.parse(localStorage.getItem('bookings_v4')) || [];
+        bookings.unshift(data);
+        localStorage.setItem('bookings_v4', JSON.stringify(bookings));
         alert('✅ Booking Berhasil Disimpan!');
         bookingForm.reset();
         tampilkanData();
     })
-    .catch(error => {
-        console.error('Error!', error.message);
-        alert('❌ Terjadi kesalahan koneksi.');
-    })
     .finally(() => {
-        btn.innerHTML = originalContent;
+        btn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Konfirmasi Booking';
         btn.disabled = false;
     });
 });
 
 function tampilkanData() {
-    let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+    let bookings = JSON.parse(localStorage.getItem('bookings_v4')) || [];
     daftarTable.innerHTML = '';
-    
-    // Update Dashboard Statistik
     updateDashboard(bookings);
 
     if (bookings.length === 0) {
-        daftarTable.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted small">Belum ada data reservasi</td></tr>';
+        daftarTable.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-muted small">Belum ada data reservasi</td></tr>';
         return;
     }
 
     bookings.forEach((item, index) => {
-        const d = new Date(item.tanggal);
-        const opsi = { day: '2-digit', month: 'long', year: 'numeric' };
-        const tglRapi = d.toLocaleDateString('id-ID', opsi);
-
         daftarTable.innerHTML += `
             <tr class="border-bottom">
                 <td>
                     <div class="fw-bold text-dark">${item.nama}</div>
-                    <small class="text-muted">ID: #${Math.floor(1000 + Math.random() * 9000)}</small>
+                    <small class="text-muted">RES-ID: #${index + 101}</small>
                 </td>
                 <td>
-                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3">
-                        ${item.ruangan}
-                    </span>
-                </td>
-                <td class="text-secondary small">
-                    <i class="far fa-calendar me-1"></i> ${tglRapi}
+                    <div class="fw-bold text-primary">${item.ruangan}</div>
+                    <div class="mt-1">
+                        <span class="badge-info-custom"><i class="fas fa-users me-1"></i>${item.kapasitas} Orang</span>
+                        <span class="text-muted ms-1" style="font-size: 0.7rem"><i class="fas fa-tools"></i> ${item.fasilitas}</span>
+                    </div>
                 </td>
                 <td>
-                    <span class="badge bg-warning text-dark border border-warning-subtle px-2 py-1 small rounded shadow-sm">
-                        <i class="fas fa-clock me-1"></i> ${item.status}
-                    </span>
+                    <div class="small fw-bold"><i class="far fa-calendar-alt me-1 text-primary"></i> ${item.tglMulai} s/d ${item.tglSelesai}</div>
+                    <div class="small text-secondary mt-1"><i class="far fa-clock me-1 text-primary"></i> ${item.jamMulai} - ${item.jamSelesai} WIB</div>
                 </td>
                 <td class="text-center">
                     <button class="btn btn-outline-danger btn-sm border-0" onclick="hapusData(${index})">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
-            </tr>
-        `;
+            </tr>`;
     });
 }
 
 function updateDashboard(bookings) {
-    const total = bookings.length;
-    const pending = bookings.filter(b => b.status === 'Menunggu').length;
-    
-    // Hitung booking hari ini
+    document.getElementById('statTotal').innerText = bookings.length;
+    document.getElementById('statPending').innerText = bookings.filter(b => b.status === 'Menunggu').length;
     const today = new Date().toISOString().split('T')[0];
-    const todayCount = bookings.filter(b => b.tanggal === today).length;
-
-    document.getElementById('statTotal').innerText = total;
-    document.getElementById('statPending').innerText = pending;
-    document.getElementById('statToday').innerText = todayCount;
+    document.getElementById('statToday').innerText = bookings.filter(b => b.tglMulai === today).length;
 }
 
 function filterData() {
     let input = document.getElementById('cariNama').value.toLowerCase();
     let rows = daftarTable.getElementsByTagName('tr');
-
     for (let i = 0; i < rows.length; i++) {
         let textCell = rows[i].getElementsByTagName('td')[0];
         if(textCell) {
@@ -121,27 +98,24 @@ function filterData() {
 
 function hapusData(index) {
     if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
-        let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+        let bookings = JSON.parse(localStorage.getItem('bookings_v4')) || [];
         bookings.splice(index, 1);
-        localStorage.setItem('bookings', JSON.stringify(bookings));
+        localStorage.setItem('bookings_v4', JSON.stringify(bookings));
         tampilkanData();
     }
 }
 
 function downloadExcel() {
-    let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+    let bookings = JSON.parse(localStorage.getItem('bookings_v4')) || [];
     if (bookings.length === 0) return alert("Data kosong");
 
-    let csvContent = "data:text/csv;charset=utf-8,No,Nama Peminjam,Ruangan,Tanggal,Status\n";
-    bookings.forEach((item, index) => {
-        csvContent += `${index + 1},${item.nama},${item.ruangan},${item.tanggal},${item.status}\n`;
+    let csv = "Nama,Ruangan,Kapasitas,Fasilitas,Tgl Mulai,Tgl Selesai,Jam Mulai,Jam Selesai\n";
+    bookings.forEach(i => {
+        csv += `"${i.nama}","${i.ruangan}","${i.kapasitas}","${i.fasilitas}","${i.tglMulai}","${i.tglSelesai}","${i.jamMulai}","${i.jamSelesai}"\n`;
     });
 
-    const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Laporan_Reservasi_${new Date().toLocaleDateString()}.csv`);
-    document.body.appendChild(link);
+    link.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    link.download = `Laporan_Reservasi_${new Date().toLocaleDateString()}.csv`;
     link.click();
-    document.body.removeChild(link);
 }
