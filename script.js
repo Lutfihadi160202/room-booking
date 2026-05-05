@@ -21,6 +21,7 @@ bookingForm.addEventListener('submit', function(e) {
         status: 'Menunggu' 
     };
 
+    // Kirim data ke Google Sheets
     fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
@@ -29,10 +30,9 @@ bookingForm.addEventListener('submit', function(e) {
     })
     .then(() => {
         let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-        bookings.unshift(data); // Tambah ke atas (data terbaru dulu)
+        bookings.unshift(data); // Tambah ke atas
         localStorage.setItem('bookings', JSON.stringify(bookings));
         
-        // SweetAlert bisa ditambahkan di sini untuk popup lebih keren
         alert('✅ Booking Berhasil Disimpan!');
         bookingForm.reset();
         tampilkanData();
@@ -51,13 +51,15 @@ function tampilkanData() {
     let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
     daftarTable.innerHTML = '';
     
+    // Update Dashboard Statistik
+    updateDashboard(bookings);
+
     if (bookings.length === 0) {
         daftarTable.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted small">Belum ada data reservasi</td></tr>';
         return;
     }
 
     bookings.forEach((item, index) => {
-        // Format Tanggal Pro (Misal: 06 Mei 2026)
         const d = new Date(item.tanggal);
         const opsi = { day: '2-digit', month: 'long', year: 'numeric' };
         const tglRapi = d.toLocaleDateString('id-ID', opsi);
@@ -77,18 +79,31 @@ function tampilkanData() {
                     <i class="far fa-calendar me-1"></i> ${tglRapi}
                 </td>
                 <td>
-                    <span class="badge-status bg-warning-subtle text-warning border border-warning-subtle">
+                    <span class="badge bg-warning text-dark border border-warning-subtle px-2 py-1 small rounded shadow-sm">
                         <i class="fas fa-clock me-1"></i> ${item.status}
                     </span>
                 </td>
                 <td class="text-center">
-                    <button class="btn btn-light btn-sm text-danger shadow-sm border" onclick="hapusData(${index})">
+                    <button class="btn btn-outline-danger btn-sm border-0" onclick="hapusData(${index})">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
             </tr>
         `;
     });
+}
+
+function updateDashboard(bookings) {
+    const total = bookings.length;
+    const pending = bookings.filter(b => b.status === 'Menunggu').length;
+    
+    // Hitung booking hari ini
+    const today = new Date().toISOString().split('T')[0];
+    const todayCount = bookings.filter(b => b.tanggal === today).length;
+
+    document.getElementById('statTotal').innerText = total;
+    document.getElementById('statPending').innerText = pending;
+    document.getElementById('statToday').innerText = todayCount;
 }
 
 function filterData() {
@@ -105,7 +120,7 @@ function filterData() {
 }
 
 function hapusData(index) {
-    if (confirm("Apakah Anda yakin ingin menghapus data ini dari tampilan lokal?")) {
+    if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
         let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
         bookings.splice(index, 1);
         localStorage.setItem('bookings', JSON.stringify(bookings));
@@ -115,13 +130,9 @@ function hapusData(index) {
 
 function downloadExcel() {
     let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-    if (bookings.length === 0) {
-        alert("Tidak ada data untuk diekspor!");
-        return;
-    }
+    if (bookings.length === 0) return alert("Data kosong");
 
     let csvContent = "data:text/csv;charset=utf-8,No,Nama Peminjam,Ruangan,Tanggal,Status\n";
-
     bookings.forEach((item, index) => {
         csvContent += `${index + 1},${item.nama},${item.ruangan},${item.tanggal},${item.status}\n`;
     });
