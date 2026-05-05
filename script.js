@@ -10,7 +10,8 @@ bookingForm.addEventListener('submit', function(e) {
     e.preventDefault();
     
     const btn = e.target.querySelector('button');
-    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Mengirim ke Kantor...';
+    const originalContent = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Memproses...';
     btn.disabled = true;
 
     const data = {
@@ -20,7 +21,6 @@ bookingForm.addEventListener('submit', function(e) {
         status: 'Menunggu' 
     };
 
-    // 1. Kirim data ke Google Sheets
     fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
@@ -28,21 +28,21 @@ bookingForm.addEventListener('submit', function(e) {
         body: JSON.stringify(data)
     })
     .then(() => {
-        // 2. Simpan di LocalStorage
         let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-        bookings.push(data);
+        bookings.unshift(data); // Tambah ke atas (data terbaru dulu)
         localStorage.setItem('bookings', JSON.stringify(bookings));
         
-        alert('Sukses! Data telah tersinkron dengan Google Sheets kantor.');
+        // SweetAlert bisa ditambahkan di sini untuk popup lebih keren
+        alert('✅ Booking Berhasil Disimpan!');
         bookingForm.reset();
         tampilkanData();
     })
     .catch(error => {
         console.error('Error!', error.message);
-        alert('Gagal mengirim! Periksa koneksi internet Anda.');
+        alert('❌ Terjadi kesalahan koneksi.');
     })
     .finally(() => {
-        btn.innerHTML = 'Booking Sekarang';
+        btn.innerHTML = originalContent;
         btn.disabled = false;
     });
 });
@@ -51,15 +51,40 @@ function tampilkanData() {
     let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
     daftarTable.innerHTML = '';
     
+    if (bookings.length === 0) {
+        daftarTable.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted small">Belum ada data reservasi</td></tr>';
+        return;
+    }
+
     bookings.forEach((item, index) => {
+        // Format Tanggal Pro (Misal: 06 Mei 2026)
+        const d = new Date(item.tanggal);
+        const opsi = { day: '2-digit', month: 'long', year: 'numeric' };
+        const tglRapi = d.toLocaleDateString('id-ID', opsi);
+
         daftarTable.innerHTML += `
-            <tr>
-                <td class="fw-bold text-dark">${item.nama}</td>
-                <td><span class="badge bg-info text-dark">${item.ruangan}</span></td>
-                <td>${item.tanggal}</td>
-                <td><span class="badge bg-warning text-dark">Menunggu</span></td>
+            <tr class="border-bottom">
                 <td>
-                    <button class="btn btn-outline-danger btn-sm" onclick="hapusData(${index})">Hapus</button>
+                    <div class="fw-bold text-dark">${item.nama}</div>
+                    <small class="text-muted">ID: #${Math.floor(1000 + Math.random() * 9000)}</small>
+                </td>
+                <td>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3">
+                        ${item.ruangan}
+                    </span>
+                </td>
+                <td class="text-secondary small">
+                    <i class="far fa-calendar me-1"></i> ${tglRapi}
+                </td>
+                <td>
+                    <span class="badge-status bg-warning-subtle text-warning border border-warning-subtle">
+                        <i class="fas fa-clock me-1"></i> ${item.status}
+                    </span>
+                </td>
+                <td class="text-center">
+                    <button class="btn btn-light btn-sm text-danger shadow-sm border" onclick="hapusData(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </td>
             </tr>
         `;
@@ -71,17 +96,16 @@ function filterData() {
     let rows = daftarTable.getElementsByTagName('tr');
 
     for (let i = 0; i < rows.length; i++) {
-        let nama = rows[i].getElementsByTagName('td')[0].innerText.toLowerCase();
-        if (nama.includes(input)) {
-            rows[i].style.display = "";
-        } else {
-            rows[i].style.display = "none";
+        let textCell = rows[i].getElementsByTagName('td')[0];
+        if(textCell) {
+            let nama = textCell.innerText.toLowerCase();
+            rows[i].style.display = nama.includes(input) ? "" : "none";
         }
     }
 }
 
 function hapusData(index) {
-    if (confirm("Hapus dari tampilan tabel? (Data di Google Sheets tetap aman)")) {
+    if (confirm("Apakah Anda yakin ingin menghapus data ini dari tampilan lokal?")) {
         let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
         bookings.splice(index, 1);
         localStorage.setItem('bookings', JSON.stringify(bookings));
@@ -89,30 +113,23 @@ function hapusData(index) {
     }
 }
 
-// FUNGSI BARU: Download Laporan ke Excel (CSV format)
 function downloadExcel() {
     let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
     if (bookings.length === 0) {
-        alert("Belum ada data untuk di-download.");
+        alert("Tidak ada data untuk diekspor!");
         return;
     }
 
-    // Header Kolom
-    let csvContent = "Nama,Ruangan,Tanggal,Status\n";
+    let csvContent = "data:text/csv;charset=utf-8,No,Nama Peminjam,Ruangan,Tanggal,Status\n";
 
-    // Isi Data
-    bookings.forEach(item => {
-        let row = `${item.nama},${item.ruangan},${item.tanggal},${item.status}`;
-        csvContent += row + "\n";
+    bookings.forEach((item, index) => {
+        csvContent += `${index + 1},${item.nama},${item.ruangan},${item.tanggal},${item.status}\n`;
     });
 
-    // Proses Download
-    let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    let link = document.createElement("a");
-    let url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute("download", "Laporan_Booking_Ruangan.csv");
-    link.style.visibility = 'hidden';
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `Laporan_Reservasi_${new Date().toLocaleDateString()}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
