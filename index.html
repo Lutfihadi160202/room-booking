@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OPS.CENTER | ROOM MANAGEMENT V5.1</title>
+    <title>SBI | IT OPERATIONS ROOM HUB</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,68 +14,66 @@
         
         /* SIDEBAR FIXED */
         .sidebar { width: 260px; position: fixed; height: 100vh; background: #070b17; border-right: 1px solid var(--border); display: flex; flex-direction: column; z-index: 1000; }
-        .sidebar-header { padding: 2rem 1.5rem; }
-        .sidebar-menu { flex-grow: 1; padding: 0 1rem; }
-        .sidebar-footer { padding: 1.5rem; border-top: 1px solid var(--border); }
+        .sidebar-header { padding: 2rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .sidebar-menu { flex-grow: 1; padding: 1rem; }
+        .sidebar-footer { padding: 1.5rem; border-top: 1px solid var(--border); background: rgba(0,0,0,0.2); }
 
-        .nav-link { color: #ffffff !important; opacity: 0.6; border-radius: 12px; padding: 12px 15px; margin-bottom: 8px; transition: 0.3s; cursor: pointer; display: flex; align-items: center; text-decoration: none; }
-        .nav-link:hover, .nav-link.active { background: rgba(0, 242, 255, 0.15); opacity: 1; color: var(--primary) !important; box-shadow: inset 0 0 10px rgba(0, 242, 255, 0.1); }
+        .nav-link { color: #ffffff !important; opacity: 0.6; border-radius: 12px; padding: 12px 15px; margin-bottom: 8px; transition: 0.3s; cursor: pointer; display: flex; align-items: center; text-decoration: none; border: 1px solid transparent; }
+        .nav-link:hover, .nav-link.active { background: rgba(0, 242, 255, 0.1); opacity: 1; color: var(--primary) !important; border: 1px solid rgba(0, 242, 255, 0.2); }
 
         /* MAIN CONTENT */
-        .main-content { margin-left: 260px; padding: 2rem; }
-        .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .main-content { margin-left: 260px; padding: 2.5rem; }
+        .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 1.5rem; margin-bottom: 1.5rem; transition: 0.3s; }
+        .glass-card:hover { border-color: rgba(0, 242, 255, 0.3); }
         
-        /* TEXT VISIBILITY FIX */
         .cyber-label { color: var(--primary); font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 10px; }
-        .input-group-label { color: #ffffff; font-weight: 600; font-size: 0.8rem; margin-bottom: 5px; display: block; }
 
-        /* FORMS CLEAR TEXT */
-        .form-control, .form-select { background: #1e293b !important; border: 1px solid var(--border) !important; color: #ffffff !important; border-radius: 10px; padding: 12px; font-weight: 500; }
-        .form-control::placeholder { color: rgba(255,255,255,0.3); }
+        /* FORM CONTROLS */
+        .form-label-sbi { color: #ffffff; font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; }
+        .form-control, .form-select { background: #1e293b !important; border: 1px solid var(--border) !important; color: #ffffff !important; border-radius: 10px; padding: 12px; }
+        .form-control:focus { box-shadow: 0 0 0 2px rgba(0, 242, 255, 0.2); border-color: var(--primary) !important; }
 
-        .btn-it { background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; color: white; font-weight: 800; border-radius: 12px; padding: 14px; width: 100%; transition: 0.3s; }
-        .btn-it:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 242, 255, 0.3); }
+        .btn-sbi { background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; color: white; font-weight: 800; border-radius: 12px; padding: 14px; width: 100%; }
+        
+        /* STATUS PILLS */
+        .st-pill { padding: 4px 12px; border-radius: 6px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border: 1px solid currentColor; }
+        .st-approved { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
+        .st-rejected { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .st-pending { background: rgba(234, 179, 8, 0.1); color: #eab308; }
 
         /* LOG TERMINAL */
-        .log-terminal { background: #000000; border-radius: 12px; padding: 15px; height: 200px; overflow-y: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; border: 1px solid var(--border); }
-        .log-entry { color: var(--primary); margin-bottom: 6px; }
+        .log-terminal { background: #000000; border-radius: 12px; padding: 15px; height: 180px; overflow-y: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; border: 1px solid var(--border); }
+        .log-entry { color: #a5f3fc; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 4px; margin-bottom: 4px; }
 
-        /* ACTIONS */
-        .btn-action { width: 34px; height: 34px; border-radius: 10px; border: none; color: white; transition: 0.2s; }
-        .st-pill { padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; border: 1px solid currentColor; }
+        .btn-action { width: 32px; height: 32px; border-radius: 8px; border: none; color: white; margin-left: 5px; transition: 0.2s; }
+        .btn-action:hover { transform: scale(1.1); }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
         <div class="sidebar-header">
-            <h4 class="text-info fw-bold m-0" style="letter-spacing: 2px;">RM.X / <span class="text-white">OPS</span></h4>
+            <h4 class="text-info fw-bold m-0">SBI <span class="text-white opacity-50">/ IT OPS</span></h4>
         </div>
         <div class="sidebar-menu">
-            <a href="#" class="nav-link active"><i class="fas fa-th-large me-3"></i> Dashboard</a>
-            <a href="#" class="nav-link" onclick="showRoomManager()"><i class="fas fa-tools me-3"></i> Kelola Ruangan</a>
+            <a href="#" class="nav-link active"><i class="fas fa-chart-line me-3"></i> Dashboard</a>
+            <a href="#" class="nav-link" onclick="showRoomManager()"><i class="fas fa-door-open me-3"></i> Master Ruangan</a>
         </div>
         <div class="sidebar-footer">
-            <button onclick="location.reload()" class="btn btn-outline-danger w-100 fw-bold py-2" style="border-radius: 10px;">
-                <i class="fas fa-power-off me-2"></i> TERMINATE
-            </button>
+            <button onclick="location.reload()" class="btn btn-outline-danger w-100 fw-bold"><i class="fas fa-power-off me-2"></i> TERMINATE</button>
         </div>
     </div>
 
     <div class="main-content">
         <div class="row mb-4 align-items-center">
-            <div class="col-md-7">
-                <h2 class="fw-extrabold m-0" style="letter-spacing: -1px;">TRAFFIC <span class="text-info">CONTROL</span></h2>
-                <p class="text-muted small">System Administrator Operations Hub v5.1</p>
+            <div class="col-md-8">
+                <h2 class="fw-bold m-0">ROOM <span class="text-info">TRAFFIC CONTROL</span></h2>
+                <p class="text-muted small mb-0">Solusi Bangun Indonesia - Operations Hub v6.0</p>
             </div>
-            <div class="col-md-5 d-flex justify-content-end gap-3">
-                <div class="glass-card m-0 py-2 px-4 text-center border-warning">
-                    <span class="cyber-label" style="color: #eab308;">Waiting</span>
-                    <div class="h3 m-0 fw-bold text-warning" id="statWaiting">0</div>
-                </div>
-                <div class="glass-card m-0 py-2 px-4 text-center border-success">
-                    <span class="cyber-label" style="color: #22c55e;">Approved</span>
-                    <div class="h3 m-0 fw-bold text-success" id="statApproved">0</div>
+            <div class="col-md-4 d-flex justify-content-end gap-2">
+                <div class="glass-card m-0 py-2 px-3 text-center border-info">
+                    <span class="cyber-label small">Approved</span>
+                    <div class="h4 m-0 fw-bold text-info" id="statApproved">0</div>
                 </div>
             </div>
         </div>
@@ -83,51 +81,39 @@
         <div class="row g-4">
             <div class="col-lg-4">
                 <div class="glass-card">
-                    <span class="cyber-label mb-4 text-white"><i class="fas fa-plus-circle me-2 text-info"></i>New Reservation</span>
+                    <span class="cyber-label mb-4 text-white"><i class="fas fa-plus-circle me-2 text-info"></i>New Deployment</span>
                     <form id="bookingForm">
-                        <label class="input-group-label">Nama / Departemen</label>
-                        <input type="text" id="nama" class="form-control mb-3" placeholder="Masukkan nama..." required>
+                        <label class="form-label-sbi">Nama / Departemen</label>
+                        <input type="text" id="nama" class="form-control mb-3" placeholder="Masukkan Identifier..." required>
                         
-                        <label class="input-group-label">Pilih Ruangan</label>
+                        <label class="form-label-sbi">Target Node (Ruangan)</label>
                         <select id="ruangan" class="form-select mb-2" onchange="updateRoomInfo()"></select>
-                        <div id="roomDetail" class="small mb-3 text-info p-3 bg-black bg-opacity-50 rounded border border-info border-opacity-25">
-                            Pilih ruangan untuk melihat fasilitas...
-                        </div>
+                        <div id="roomDetail" class="small mb-3 text-info p-3 bg-black bg-opacity-40 rounded border border-info border-opacity-25"></div>
 
                         <div class="row g-2 mb-4">
-                            <div class="col-6">
-                                <label class="input-group-label">Mulai</label>
-                                <input type="datetime-local" id="tglMulai" class="form-control">
-                            </div>
-                            <div class="col-6">
-                                <label class="input-group-label">Selesai</label>
-                                <input type="datetime-local" id="tglSelesai" class="form-control">
-                            </div>
+                            <div class="col-6"><label class="form-label-sbi">Mulai</label><input type="datetime-local" id="tglMulai" class="form-control" required></div>
+                            <div class="col-6"><label class="form-label-sbi">Selesai</label><input type="datetime-local" id="tglSelesai" class="form-control" required></div>
                         </div>
-                        <button type="submit" class="btn btn-it">DIRECT APPROVE</button>
+                        <button type="submit" class="btn btn-sbi">DIRECT DEPLOY</button>
                     </form>
                 </div>
 
                 <div class="glass-card">
-                    <span class="cyber-label">Admin Activity Log</span>
-                    <div class="log-terminal" id="activityLog">
-                        <div class="log-entry">> Initializing secure session...</div>
-                    </div>
+                    <span class="cyber-label">System Activity Log</span>
+                    <div class="log-terminal" id="activityLog"></div>
                 </div>
             </div>
 
             <div class="col-lg-8">
                 <div class="glass-card">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="d-flex justify-content-between mb-4">
                         <span class="cyber-label m-0">Live Management Table</span>
-                        <span class="badge bg-info text-dark">SECURE_DB</span>
+                        <span class="badge bg-primary text-dark fw-bold">ACTIVE_NODES</span>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-dark table-hover align-middle">
-                            <thead class="text-muted border-secondary">
-                                <tr style="font-size: 0.7rem; text-transform: uppercase;">
-                                    <th>Identifier / Dept</th><th>Target Node</th><th>Status</th><th class="text-end">Action</th>
-                                </tr>
+                            <thead class="text-muted border-secondary" style="font-size: 0.75rem;">
+                                <tr><th>IDENTIFIER</th><th>TARGET ROOM</th><th>STATUS</th><th class="text-end">ACTION</th></tr>
                             </thead>
                             <tbody id="mainTable" style="font-size: 0.9rem;"></tbody>
                         </table>
@@ -142,16 +128,20 @@
             <div class="modal-content bg-dark border-info" style="border-radius: 20px;">
                 <div class="modal-body p-4">
                     <div class="d-flex justify-content-between mb-4">
-                        <h5 class="text-info fw-bold m-0">MASTER DATA RUANGAN</h5>
+                        <h5 class="text-info fw-bold m-0" id="modalTitle">MASTER DATA RUANGAN</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="row g-4">
-                        <div class="col-md-5">
-                            <span class="cyber-label">Tambah Node Baru</span>
+                        <div class="col-md-5 border-end border-secondary">
+                            <span class="cyber-label" id="formLabel">Tambah/Edit Ruangan</span>
+                            <input type="hidden" id="editIndex" value="-1">
                             <input type="text" id="newRoomName" class="form-control mb-2" placeholder="Nama Ruangan">
                             <input type="text" id="newRoomCap" class="form-control mb-2" placeholder="Kapasitas (pax)">
-                            <textarea id="newRoomFac" class="form-control mb-3" rows="3" placeholder="Fasilitas (AC, Wifi, TV...)"></textarea>
-                            <button onclick="addRoom()" class="btn btn-it">SIMPAN NODE</button>
+                            <textarea id="newRoomFac" class="form-control mb-3" rows="3" placeholder="Fasilitas..."></textarea>
+                            <div class="d-flex gap-2">
+                                <button onclick="saveRoom()" class="btn btn-sbi" id="saveBtn">SIMPAN</button>
+                                <button onclick="resetRoomForm()" class="btn btn-outline-light" style="border-radius: 12px; display:none;" id="cancelBtn">BATAL</button>
+                            </div>
                         </div>
                         <div class="col-md-7">
                             <span class="cyber-label">Daftar Ruangan Aktif</span>
@@ -165,35 +155,73 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let rooms = JSON.parse(localStorage.getItem('ops_rooms')) || [
+        // DATA PERSISTENCE
+        let rooms = JSON.parse(localStorage.getItem('sbi_rooms')) || [
             { nama: "RUANG MEETING I", cap: "12 Pax", fac: "Projector, AC, Smart TV" },
             { nama: "WAR ROOM", cap: "8 Pax", fac: "Fiber Internet, Whiteboard" }
         ];
-        let bookings = JSON.parse(localStorage.getItem('ops_bookings')) || [];
+        let bookings = JSON.parse(localStorage.getItem('sbi_bookings')) || [];
 
         function showRoomManager() { 
+            resetRoomForm();
             renderRoomList();
             new bootstrap.Modal(document.getElementById('roomManagerModal')).show(); 
         }
 
-        function addRoom() {
+        // ROOM CRUD FUNCTIONS
+        function saveRoom() {
             const name = document.getElementById('newRoomName').value;
-            if(!name) return alert("Wajib isi nama ruangan!");
-            rooms.push({
-                nama: name.toUpperCase(),
-                cap: document.getElementById('newRoomCap').value || "-",
-                fac: document.getElementById('newRoomFac').value || "-"
-            });
-            localStorage.setItem('ops_rooms', JSON.stringify(rooms));
-            renderRoomList(); refreshAll();
+            const cap = document.getElementById('newRoomCap').value;
+            const fac = document.getElementById('newRoomFac').value;
+            const editIndex = parseInt(document.getElementById('editIndex').value);
+
+            if(!name) return alert("Nama wajib diisi!");
+
+            const roomData = { nama: name.toUpperCase(), cap: cap || "-", fac: fac || "-" };
+
+            if(editIndex === -1) {
+                rooms.push(roomData);
+                logAction(`Master: Added new room ${roomData.nama}`);
+            } else {
+                rooms[editIndex] = roomData;
+                logAction(`Master: Updated room ${roomData.nama}`);
+            }
+
+            localStorage.setItem('sbi_rooms', JSON.stringify(rooms));
+            resetRoomForm();
+            renderRoomList();
+            refreshAll();
+        }
+
+        function editRoom(idx) {
+            const r = rooms[idx];
+            document.getElementById('newRoomName').value = r.nama;
+            document.getElementById('newRoomCap').value = r.cap;
+            document.getElementById('newRoomFac').value = r.fac;
+            document.getElementById('editIndex').value = idx;
+            
+            document.getElementById('formLabel').innerText = "Edit Ruangan";
+            document.getElementById('saveBtn').innerText = "UPDATE";
+            document.getElementById('cancelBtn').style.display = "block";
+        }
+
+        function resetRoomForm() {
             document.getElementById('newRoomName').value = "";
+            document.getElementById('newRoomCap').value = "";
+            document.getElementById('newRoomFac').value = "";
+            document.getElementById('editIndex').value = "-1";
+            document.getElementById('formLabel').innerText = "Tambah Ruangan Baru";
+            document.getElementById('saveBtn').innerText = "SIMPAN";
+            document.getElementById('cancelBtn').style.display = "none";
         }
 
         function deleteRoom(idx) {
-            if(confirm('Hapus ruangan ini?')) {
+            if(confirm('Hapus ruangan ini dari sistem?')) {
+                logAction(`Master: Deleted room ${rooms[idx].nama}`);
                 rooms.splice(idx, 1);
-                localStorage.setItem('ops_rooms', JSON.stringify(rooms));
-                renderRoomList(); refreshAll();
+                localStorage.setItem('sbi_rooms', JSON.stringify(rooms));
+                renderRoomList();
+                refreshAll();
             }
         }
 
@@ -201,16 +229,20 @@
             document.getElementById('roomListContainer').innerHTML = rooms.map((r, i) => `
                 <div class="d-flex justify-content-between align-items-center p-3 border-bottom border-secondary">
                     <div><b class="text-info">${r.nama}</b><br><small class="text-white opacity-50">${r.cap} | ${r.fac}</small></div>
-                    <button class="btn btn-sm btn-danger rounded-circle" onclick="deleteRoom(${i})"><i class="fas fa-trash p-1"></i></button>
+                    <div>
+                        <button class="btn btn-sm btn-outline-info me-1" onclick="editRoom(${i})"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteRoom(${i})"><i class="fas fa-trash"></i></button>
+                    </div>
                 </div>
             `).join('');
         }
 
+        // BOOKING FUNCTIONS
         function updateRoomInfo() {
             const sel = rooms.find(r => r.nama === document.getElementById('ruangan').value);
             document.getElementById('roomDetail').innerHTML = sel ? 
                 `<b class="text-white">CAP:</b> ${sel.cap} | <b class="text-white">FAC:</b> ${sel.fac}` : 
-                "Pilih ruangan untuk melihat fasilitas...";
+                "Pilih node untuk cek spesifikasi...";
         }
 
         document.getElementById('bookingForm').addEventListener('submit', function(e) {
@@ -223,16 +255,25 @@
                 status: "APPROVED"
             };
             bookings.unshift(data);
-            logAction(`Admin: Deployment Successful for ${data.nama}`);
+            logAction(`Traffic: Node ${data.nama} successfully deployed to ${data.ruangan}`);
             saveAndRefresh();
             this.reset();
         });
 
-        function setSt(id, st) {
-            const i = bookings.findIndex(b => b.id === id);
-            bookings[i].status = st;
-            logAction(`Admin: Node ${bookings[i].nama} updated to ${st}`);
-            saveAndRefresh();
+        function setStatus(id, newStatus) {
+            const idx = bookings.findIndex(b => b.id === id);
+            if(idx !== -1) {
+                bookings[idx].status = newStatus;
+                logAction(`Status: ${bookings[idx].nama} changed to ${newStatus}`);
+                saveAndRefresh();
+            }
+        }
+
+        function deleteBooking(id) {
+            if(confirm('Hapus log traffic ini?')) {
+                bookings = bookings.filter(b => b.id !== id);
+                saveAndRefresh();
+            }
         }
 
         function logAction(msg) {
@@ -241,31 +282,35 @@
         }
 
         function saveAndRefresh() {
-            localStorage.setItem('ops_bookings', JSON.stringify(bookings));
+            localStorage.setItem('sbi_bookings', JSON.stringify(bookings));
             refreshAll();
         }
 
         function refreshAll() {
+            // Dropdown update
             document.getElementById('ruangan').innerHTML = rooms.map(r => `<option value="${r.nama}">${r.nama}</option>`).join('');
             updateRoomInfo();
 
+            // Table update - Fix status sinkron
             document.getElementById('mainTable').innerHTML = bookings.map(b => `
                 <tr>
                     <td><div class="fw-bold text-white">${b.nama}</div><small class="text-muted">${b.waktu}</small></td>
                     <td><span class="text-info fw-bold">${b.ruangan}</span></td>
                     <td><span class="st-pill st-${b.status.toLowerCase()}">${b.status}</span></td>
                     <td class="text-end">
-                        <button class="btn-action bg-success me-1" onclick="setSt(${b.id}, 'APPROVED')"><i class="fas fa-check"></i></button>
-                        <button class="btn-action bg-danger" onclick="setSt(${b.id}, 'REJECTED')"><i class="fas fa-times"></i></button>
+                        <button class="btn-action bg-success" title="Approve" onclick="setStatus(${b.id}, 'APPROVED')"><i class="fas fa-check"></i></button>
+                        <button class="btn-action bg-danger" title="Reject" onclick="setStatus(${b.id}, 'REJECTED')"><i class="fas fa-times"></i></button>
+                        <button class="btn-action bg-secondary" title="Delete" onclick="deleteBooking(${b.id})"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>
             `).join('');
 
-            document.getElementById('statWaiting').innerText = bookings.filter(b => b.status === 'PENDING').length;
             document.getElementById('statApproved').innerText = bookings.filter(b => b.status === 'APPROVED').length;
         }
 
+        // Initialize
         refreshAll();
+        logAction("System Initialized. Secure Session Active.");
     </script>
 </body>
 </html>
