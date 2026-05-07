@@ -3,218 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RoomMaster Elite | Next-Gen Booking</title>
+    <title>RoomMaster X | Pro Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;500;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
-            --glass-bg: rgba(255, 255, 255, 0.7);
-            --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-            --indigo-600: #4f46e5;
+            --accent: #ff0055; 
+            --dark: #0f172a;
+            --bg: #ffffff;
         }
 
         body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: #f8fafc; 
-            color: #1e293b;
-            min-height: 100vh;
+            font-family: 'Bricolage Grotesque', sans-serif; 
+            background: var(--bg); 
+            color: var(--dark);
         }
 
-        /* Hero & Header */
-        .header-banner {
-            background: var(--primary-gradient);
-            border-radius: 0 0 40px 40px;
-            padding: 80px 0 120px 0;
+        /* Hero Section */
+        .hero-section {
+            background: var(--dark);
             color: white;
-            text-align: center;
+            padding: 60px 0 100px 0;
+            border-bottom: 5px solid var(--accent);
         }
 
-        /* Container & Cards */
-        .overlap-content { margin-top: -80px; }
-
-        .premium-card {
+        /* Bento Card Style (Neo-Brutalism) */
+        .bento-card {
             background: white;
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            border-radius: 24px;
-            box-shadow: var(--card-shadow);
-            transition: transform 0.3s ease;
+            border: 3px solid var(--dark);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 10px 10px 0px var(--dark);
+            transition: all 0.2s ease;
+            margin-bottom: 20px;
         }
+        .bento-card:hover { transform: translate(-3px, -3px); box-shadow: 13px 13px 0px var(--accent); }
 
-        .stat-icon {
-            width: 54px;
-            height: 54px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
+        .overlap-content { margin-top: -60px; }
 
-        /* Forms & Inputs */
-        .form-label { font-weight: 600; font-size: 0.85rem; color: #64748b; margin-left: 4px; }
+        /* Form Styling */
         .form-control, .form-select {
-            border-radius: 14px;
-            padding: 12px 18px;
-            border: 2px solid #f1f5f9;
-            background: #f8fafc;
-            font-weight: 500;
+            border: 2px solid var(--dark);
+            border-radius: 12px;
+            padding: 12px;
+            font-weight: 600;
         }
-        .form-control:focus {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-            background: white;
+        .form-control:focus { border-color: var(--accent); box-shadow: none; }
+
+        /* Status Badges */
+        .status-pill {
+            padding: 6px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            border: 2px solid var(--dark);
+            display: inline-block;
+            text-transform: uppercase;
         }
+        .bg-pending { background: #ffef00; color: black; }
+        .bg-approved { background: #00ff88; color: black; }
+        .bg-rejected { background: #ff4d4d; color: white; }
 
         /* Buttons */
-        .btn-elite {
-            background: var(--primary-gradient);
+        .btn-main {
+            background: var(--accent);
             color: white;
-            border: none;
-            border-radius: 16px;
-            padding: 16px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+            border: 3px solid var(--dark);
+            border-radius: 12px;
+            padding: 12px 25px;
+            font-weight: 800;
+            box-shadow: 4px 4px 0px var(--dark);
         }
-        .btn-elite:hover { transform: translateY(-2px); color: white; opacity: 0.95; }
+        .btn-main:hover { background: var(--dark); color: white; transform: translateY(-2px); }
 
-        /* Custom Table Styling */
-        .table-premium thead th {
-            background: #f8fafc;
-            text-transform: uppercase;
-            font-size: 0.7rem;
-            letter-spacing: 1px;
-            color: #94a3b8;
-            padding: 20px;
-            border: none;
-        }
-        .table-premium tbody td { padding: 20px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
-        
-        .room-tag {
-            background: #eef2ff;
-            color: #4f46e5;
-            padding: 6px 14px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.8rem;
-        }
+        .btn-approve { background: #00ff88; border: 2px solid var(--dark); border-radius: 8px; }
+        .btn-reject { background: #ff4d4d; border: 2px solid var(--dark); border-radius: 8px; color: white; }
 
-        .status-badge {
-            padding: 5px 12px;
+        /* Filter Tabs */
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        .filter-btn {
+            background: white;
+            border: 2px solid var(--dark);
+            padding: 5px 15px;
             border-radius: 8px;
-            font-size: 0.75rem;
             font-weight: 700;
+            cursor: pointer;
         }
+        .filter-btn.active { background: var(--dark); color: white; }
 
-        /* Animation */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        .stat-val { font-size: 2.5rem; font-weight: 800; color: var(--accent); }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg py-3">
+    <nav class="navbar navbar-dark bg-dark py-3">
         <div class="container">
-            <a class="navbar-brand fw-extrabold text-white" href="#" style="font-size: 1.5rem;">
-                <i class="fas fa-layer-group me-2"></i>ROOM<span class="fw-light">MASTER</span>
-            </a>
-            <div class="ms-auto">
-                <button class="btn btn-light rounded-pill px-4 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#modalRuangan">
-                    <i class="fas fa-cog me-2 text-primary"></i>Config Master
-                </button>
-            </div>
+            <a class="navbar-brand fw-bolder fs-3" href="#">RM<span style="color: var(--accent);">.X</span></a>
+            <button class="btn btn-outline-light fw-bold rounded-pill" data-bs-toggle="modal" data-bs-target="#modalRuangan">
+                <i class="fas fa-plus-circle me-2"></i>Manage Rooms
+            </button>
         </div>
     </nav>
 
-    <div class="header-banner">
+    <div class="hero-section text-center">
         <div class="container">
-            <h1 class="display-4 fw-800 mb-2">Smart Reservation Hub</h1>
-            <p class="lead opacity-75">Sistem manajemen ruang meeting masa depan untuk kantor Anda.</p>
+            <h1 class="display-3 fw-800 mb-0">BOOKING HUB</h1>
+            <p class="opacity-75 fw-bold">Pusat Kendali Reservasi Ruangan Kantor</p>
         </div>
     </div>
 
     <div class="container overlap-content">
-        <div class="row g-4 mb-5">
-            <div class="col-md-4">
-                <div class="card premium-card p-4 border-0">
-                    <div class="stat-icon bg-primary text-white"><i class="fas fa-check-double"></i></div>
-                    <h6 class="text-muted small fw-bold">TOTAL RESERVASI</h6>
-                    <h2 class="fw-800 m-0" id="statTotal">0</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="bento-card text-center">
+                    <div class="small fw-bold opacity-50">WAITING</div>
+                    <div class="stat-val" id="statPending">0</div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card premium-card p-4 border-0">
-                    <div class="stat-icon bg-warning text-white"><i class="fas fa-bolt"></i></div>
-                    <h6 class="text-muted small fw-bold">LIVE BOOKING</h6>
-                    <h2 class="fw-800 m-0" id="statToday">0</h2>
+            <div class="col-md-3">
+                <div class="bento-card text-center">
+                    <div class="small fw-bold opacity-50">APPROVED</div>
+                    <div class="stat-val" id="statApproved">0</div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card premium-card p-4 border-0">
-                    <div class="stat-icon bg-success text-white"><i class="fas fa-door-open"></i></div>
-                    <h6 class="text-muted small fw-bold">RUANG TERSEDIA</h6>
-                    <h2 class="fw-800 m-0" id="statRooms">0</h2>
-                </div>
-            </div>
-        </div>
-
-        <div class="row g-4 pb-5">
-            <div class="col-lg-4">
-                <div class="card premium-card p-4 sticky-top" style="top: 20px;">
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="bg-indigo-soft p-2 rounded-3 me-3 text-primary bg-light">
-                            <i class="fas fa-calendar-plus fa-lg"></i>
-                        </div>
-                        <h5 class="fw-bold m-0">Buat Jadwal</h5>
-                    </div>
-                    <form id="bookingForm">
-                        <div class="mb-3">
-                            <label class="form-label">Nama Peminjam</label>
-                            <input type="text" id="nama" class="form-control" placeholder="Nama Lengkap" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Pilih Ruangan & Fasilitas</label>
-                            <select id="ruangan" class="form-select" required></select>
-                        </div>
-                        <div class="row g-2 mb-3">
-                            <div class="col-6">
-                                <label class="form-label">Mulai</label>
-                                <input type="date" id="tglMulai" class="form-control mb-2" required>
-                                <input type="time" id="jamMulai" class="form-control" required>
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label">Selesai</label>
-                                <input type="date" id="tglSelesai" class="form-control mb-2" required>
-                                <input type="time" id="jamSelesai" class="form-control" required>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-elite w-100 mt-3">
-                            BOOKING SEKARANG <i class="fas fa-chevron-right ms-2"></i>
-                        </button>
+            
+            <div class="col-md-6">
+                <div class="bento-card">
+                    <form id="bookingForm" class="row g-2">
+                        <div class="col-6"><input type="text" id="nama" class="form-control" placeholder="Nama Anda" required></div>
+                        <div class="col-6"><select id="ruangan" class="form-select" required></select></div>
+                        <div class="col-4"><input type="date" id="tglMulai" class="form-control" required></div>
+                        <div class="col-4"><input type="time" id="jamMulai" class="form-control" required></div>
+                        <div class="col-4"><button type="submit" class="btn btn-main w-100">BOOK <i class="fas fa-bolt"></i></button></div>
                     </form>
                 </div>
             </div>
 
-            <div class="col-lg-8">
-                <div class="card premium-card p-4 overflow-hidden">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="fw-bold m-0">Live Schedule <span class="badge bg-light text-primary ms-2 rounded-pill fw-bold" id="badgeTotal">0</span></h5>
-                        <button onclick="downloadExcel()" class="btn btn-success btn-sm rounded-pill px-3 fw-bold">
-                            <i class="fas fa-file-excel me-1"></i> Export Data
-                        </button>
+            <div class="col-12">
+                <div class="bento-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                        <h4 class="fw-800 m-0"><i class="fas fa-list me-2"></i>Reservation List</h4>
+                        <div class="filter-group">
+                            <button class="filter-btn active" onclick="filterData('ALL', this)">ALL</button>
+                            <button class="filter-btn" onclick="filterData('PENDING', this)">PENDING</button>
+                            <button class="filter-btn" onclick="filterData('APPROVED', this)">APPROVED</button>
+                        </div>
                     </div>
+                    
                     <div class="table-responsive">
-                        <table class="table table-premium">
-                            <thead>
-                                <tr>
-                                    <th>Identitas</th>
-                                    <th>Detail Ruang</th>
-                                    <th>Durasi Waktu</th>
-                                    <th class="text-center">Action</th>
+                        <table class="table align-middle">
+                            <thead class="bg-light">
+                                <tr class="text-uppercase small fw-800">
+                                    <th>User</th>
+                                    <th>Room Details</th>
+                                    <th>Schedule</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="daftarBooking"></tbody>
@@ -227,42 +179,20 @@
 
     <div class="modal fade" id="modalRuangan" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content border-0 rounded-4 shadow-lg">
-                <div class="modal-header border-0 p-4">
-                    <h5 class="fw-800 m-0 text-primary">Master Data Ruangan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4 pt-0">
-                    <div class="bg-light p-4 rounded-4 mb-4">
-                        <h6 class="fw-bold mb-3">Input Ruangan Baru</h6>
-                        <form id="roomForm" class="row g-3">
-                            <div class="col-md-4">
-                                <input type="text" id="masterRuangan" class="form-control" placeholder="Nama Ruang" required>
-                            </div>
-                            <div class="col-md-3">
-                                <input type="number" id="masterKapasitas" class="form-control" placeholder="Kap (Orang)" required>
-                            </div>
-                            <div class="col-md-3">
-                                <input type="text" id="masterFasilitas" class="form-control" placeholder="Fasilitas" required>
-                            </div>
-                            <div class="col-md-2">
-                                <button type="submit" class="btn btn-primary w-100 rounded-3"><i class="fas fa-plus"></i></button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead class="text-muted">
-                                <tr>
-                                    <th>Ruang</th>
-                                    <th>Kapasitas</th>
-                                    <th>Fasilitas</th>
-                                    <th>Opsi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="listMasterRuangan"></tbody>
-                        </table>
-                    </div>
+            <div class="modal-content border-0 rounded-4 shadow-lg border border-dark border-3">
+                <div class="modal-body p-4">
+                    <h4 class="fw-800 mb-4">Master Data Ruangan</h4>
+                    <form id="roomForm" class="row g-2 mb-4">
+                        <div class="col-md-5"><input type="text" id="masterRuangan" class="form-control" placeholder="Nama Ruang" required></div>
+                        <div class="col-md-3"><input type="number" id="masterKapasitas" class="form-control" placeholder="Pax" required></div>
+                        <div class="col-md-4 d-flex gap-2">
+                            <input type="text" id="masterFasilitas" class="form-control" placeholder="Fasilitas">
+                            <button type="submit" class="btn btn-dark"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </form>
+                    <table class="table table-sm">
+                        <tbody id="listMasterRuangan"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
