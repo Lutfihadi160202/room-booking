@@ -3,90 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RM.X | IT OPS HUB V2</title>
+    <title>RM.X | IT OPS CENTER</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
     <style>
-        :root { --primary: #00f2ff; --secondary: #7000ff; --bg: #020617; --card: #0f172a; --border: #1e293b; --text: #f8fafc; }
-        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; overflow-x: hidden; }
+        :root { --primary: #00f2ff; --secondary: #7000ff; --bg: #020617; --card: #0f172a; --border: #1e293b; --text: #ffffff; }
+        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; }
 
-        /* GATEWAY STYLE */
-        #gatewayPage { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at center, #111827 0%, #020617 100%); }
-        .gateway-card { background: var(--card); border: 2px solid var(--border); padding: 2.5rem; border-radius: 28px; width: 420px; box-shadow: 0 0 60px rgba(0, 242, 255, 0.15); text-align: center; }
-        
-        /* DASHBOARD LAYOUT */
+        /* --- LOGIN PAGE (FIXED VISIBILITY) --- */
+        #gatewayPage { 
+            min-height: 100vh; display: flex; align-items: center; justify-content: center; 
+            background: radial-gradient(circle at center, #111827 0%, #020617 100%);
+        }
+        .gateway-card { 
+            background: #0f172a; border: 2px solid var(--primary); padding: 3rem 2rem; 
+            border-radius: 28px; width: 400px; text-align: center; box-shadow: 0 0 40px rgba(0, 242, 255, 0.2);
+        }
+        .login-label { color: var(--primary); font-weight: 800; font-size: 0.75rem; text-transform: uppercase; display: block; text-align: left; margin-bottom: 5px; }
+
+        /* --- DASHBOARD LAYOUT --- */
         #dashboardPage { display: none; }
         .sidebar { width: 260px; position: fixed; height: 100vh; background: #070b17; border-right: 1px solid var(--border); padding: 2rem; }
         .main-content { margin-left: 260px; padding: 2rem; }
 
-        .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; margin-bottom: 1.5rem; position: relative; }
-        .glass-card::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, var(--primary), var(--secondary)); border-radius: 20px 20px 0 0; }
+        .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .form-control, .form-select { background: #1e293b !important; border: 1px solid var(--border) !important; color: white !important; }
         
-        .form-label-custom { color: var(--primary); font-weight: 700; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px; }
-        .form-control, .form-select { background: #1e293b !important; border: 1px solid var(--border) !important; color: white !important; border-radius: 10px; font-size: 0.85rem; }
-        
-        .btn-it { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; font-weight: 800; border-radius: 10px; padding: 10px; transition: 0.3s; }
-        .btn-it:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 242, 255, 0.3); }
+        .btn-it { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; font-weight: 800; border-radius: 10px; padding: 10px; }
+        .btn-it:hover { opacity: 0.9; transform: translateY(-2px); }
 
-        /* CALENDAR */
-        .calendar-container { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 10px; }
-        .cal-day { background: #1e293b; aspect-ratio: 1; border-radius: 6px; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; color: #64748b; border: 1px solid transparent; }
-        .cal-booked { background: var(--secondary); color: white; border-color: var(--primary); }
+        /* --- CALENDAR (PINDAH BAWAH) --- */
+        .calendar-container { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 15px; }
+        .cal-day { background: #1e293b; aspect-ratio: 1; border-radius: 8px; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; color: #94a3b8; }
+        .cal-booked { background: var(--secondary); color: white; box-shadow: 0 0 10px var(--secondary); border: 1px solid var(--primary); }
 
-        .nav-link-custom { display: flex; align-items: center; padding: 12px; color: #94a3b8; text-decoration: none; border-radius: 12px; margin-bottom: 8px; transition: 0.3s; }
-        .nav-link-custom:hover, .nav-link-custom.active { background: rgba(0, 242, 255, 0.1); color: var(--primary); }
+        .sidebar-link { color: #94a3b8; text-decoration: none; display: block; padding: 12px; border-radius: 10px; margin-bottom: 10px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .sidebar-link:hover { background: rgba(0, 242, 255, 0.1); color: var(--primary); }
     </style>
 </head>
 <body>
 
     <div id="gatewayPage">
         <div class="gateway-card">
-            <h2 class="fw-extrabold mb-1" style="font-family:'JetBrains Mono'; color:var(--primary)">RM.X / OPS</h2>
-            <p class="text-muted small mb-4">SECURE GATEWAY ACCESS</p>
-            <input type="text" id="adminUser" class="form-control mb-3" placeholder="Admin ID">
-            <input type="password" id="adminPass" class="form-control mb-4" placeholder="Security Token">
-            <button onclick="prosesLogin()" class="btn btn-it w-100 mb-4">AUTHORIZE</button>
-            <div class="pt-3 border-top border-secondary border-opacity-25">
-                <span class="small fw-bold text-info">SCAN FOR QUICK BOOKING</span><br>
-                <div id="qrcode" class="mt-3 bg-white p-2 d-inline-block rounded-3"></div>
+            <h2 class="fw-bold mb-4" style="font-family:'JetBrains Mono'; color:var(--primary)">RM.X / GATEWAY</h2>
+            
+            <div class="mb-3">
+                <label class="login-label">Admin Identity</label>
+                <input type="text" id="adminUser" class="form-control form-control-lg" placeholder="Username">
+            </div>
+            <div class="mb-4">
+                <label class="login-label">Access Token</label>
+                <input type="password" id="adminPass" class="form-control form-control-lg" placeholder="••••••••">
+            </div>
+            <button onclick="prosesLogin()" class="btn btn-it w-100 py-3 mb-4">AUTHORIZE SYSTEM</button>
+
+            <div class="pt-4 border-top border-secondary">
+                <p class="text-info fw-bold small mb-3">ANDA USER? SCAN BARCODE DISINI</p>
+                <div id="qrcode" class="bg-white p-2 d-inline-block rounded-3"></div>
             </div>
         </div>
     </div>
 
     <div id="dashboardPage">
         <div class="sidebar">
-            <h4 class="fw-bold text-info mb-5">OPS.CENTER</h4>
-            <nav>
-                <a href="#" class="nav-link-custom active"><i class="fas fa-columns me-2"></i> Dashboard</a>
-                <a href="display.html" class="nav-link-custom"><i class="fas fa-desktop me-2"></i> Monitor Display</a>
-                <button class="nav-link-custom w-100 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#modalAddRoom">
-                    <i class="fas fa-plus-square me-2"></i> Tambah Ruangan
-                </button>
-            </nav>
-            <button onclick="location.reload()" class="btn btn-outline-danger btn-sm w-100 mt-5">TERMINATE SESSION</button>
+            <h4 class="text-info fw-bold mb-5">OPS.CENTER</h4>
+            <div class="sidebar-link" onclick="location.reload()"><i class="fas fa-home me-2"></i> Dashboard</div>
+            <a href="display.html" target="_blank" class="sidebar-link"><i class="fas fa-tv me-2"></i> TV Display</a>
+            <div class="sidebar-link" onclick="showModal()"><i class="fas fa-plus-square me-2"></i> Tambah Ruangan</div>
+            
+            <button onclick="location.reload()" class="btn btn-outline-danger btn-sm w-100 mt-5">LOGOUT</button>
         </div>
 
         <div class="main-content">
-            <div class="row g-4 mb-4">
-                <div class="col-md-3">
-                    <div class="glass-card text-center py-2">
-                        <span class="form-label-custom">Pending Approval</span>
-                        <h2 class="m-0 fw-bold" id="statPending">0</h2>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="glass-card text-center py-2">
-                        <span class="form-label-custom">Approved Logs</span>
-                        <h2 class="m-0 fw-bold text-success" id="statApproved">0</h2>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="glass-card text-center">
+                        <span class="text-muted small fw-bold">PENDING APPROVAL</span>
+                        <h2 class="fw-bold text-warning" id="statPending">0</h2>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="glass-card py-2">
-                        <span class="form-label-custom">Booking Schedule (Current Month)</span>
-                        <div class="calendar-container" id="miniCalendar"></div>
+                    <div class="glass-card text-center">
+                        <span class="text-muted small fw-bold">APPROVED LOGS</span>
+                        <h2 class="fw-bold text-success" id="statApproved">0</h2>
                     </div>
                 </div>
             </div>
@@ -94,78 +96,83 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div class="glass-card">
-                        <h6 class="fw-bold mb-4 text-info"><i class="fas fa-edit me-2"></i>NEW RESERVATION</h6>
+                        <h6 class="text-primary fw-bold mb-4">NEW RESERVATION</h6>
                         <form id="bookingForm">
-                            <label class="form-label-custom">Requester</label>
+                            <label class="login-label">User Name</label>
                             <input type="text" id="nama" class="form-control mb-3" required>
                             
-                            <label class="form-label-custom">Select Node / Room</label>
+                            <label class="login-label">Select Room</label>
                             <select id="ruangan" class="form-select mb-2" onchange="updateRoomInfo()" required></select>
-                            <div id="roomDetail" class="small mb-3 text-white-50"></div>
+                            <div id="roomDetail" class="small mb-3 text-info"></div>
 
                             <div class="row g-2 mb-3">
-                                <div class="col-6"><label class="form-label-custom">Start Date</label><input type="date" id="tglMulai" class="form-control" required></div>
-                                <div class="col-6"><label class="form-label-custom">End Date</label><input type="date" id="tglSelesai" class="form-control" required></div>
+                                <div class="col-6"><label class="login-label">Start Date</label><input type="date" id="tglMulai" class="form-control" required></div>
+                                <div class="col-6"><label class="login-label">End Date</label><input type="date" id="tglSelesai" class="form-control" required></div>
                             </div>
                             <div class="row g-2 mb-4">
-                                <div class="col-6"><label class="form-label-custom">Start Time</label><input type="time" id="jamMulai" class="form-control" required></div>
-                                <div class="col-6"><label class="form-label-custom">End Time</label><input type="time" id="jamSelesai" class="form-control" required></div>
+                                <div class="col-6"><label class="login-label">Start Time</label><input type="time" id="jamMulai" class="form-control" required></div>
+                                <div class="col-6"><label class="login-label">End Time</label><input type="time" id="jamSelesai" class="form-control" required></div>
                             </div>
-                            <button type="submit" class="btn btn-it w-100">EXECUTE LOG</button>
+                            <button type="submit" class="btn btn-it w-100">SUBMIT DATA</button>
                         </form>
                     </div>
                 </div>
 
                 <div class="col-lg-8">
-                    <div class="glass-card">
-                        <h6 class="fw-bold mb-4 text-info"><i class="fas fa-list-ul me-2"></i>TRAFFIC_LOGS</h6>
+                    <div class="glass-card mb-4">
+                        <h6 class="text-primary fw-bold mb-3 text-uppercase">Log Activity</h6>
                         <div class="table-responsive">
-                            <table class="table table-dark table-hover align-middle" style="font-size: 0.75rem;">
-                                <thead>
-                                    <tr class="text-muted"><th>IDENTIFIER</th><th>ROOM</th><th>SCHEDULE</th><th>STATUS</th><th class="text-end">OP</th></tr>
-                                </thead>
+                            <table class="table table-dark table-hover small">
+                                <thead><tr><th>USER</th><th>ROOM</th><th>SCHEDULE</th><th>ST</th><th>OP</th></tr></thead>
                                 <tbody id="daftarBooking"></tbody>
                             </table>
                         </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <h6 class="text-primary fw-bold mb-2 text-uppercase">Monthly Schedule Visualization</h6>
+                        <div class="calendar-container" id="miniCalendar"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="modalAddRoom" tabindex="-1" aria-hidden="true">
+    <div id="myModal" class="modal fade" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-dark border-info">
-                <div class="modal-header border-secondary">
-                    <h6 class="modal-title text-info fw-bold">TAMBAH NODE RUANGAN BARU</h6>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
+                <div class="modal-header border-secondary"><h6 class="modal-title text-info">TAMBAH RUANGAN BARU</h6></div>
                 <div class="modal-body">
-                    <label class="form-label-custom">Nama Ruangan</label>
-                    <input type="text" id="newRoomName" class="form-control mb-3" placeholder="Contoh: Lab Jaringan">
-                    <label class="form-label-custom">Kapasitas (Pax)</label>
+                    <label class="login-label">Nama Ruangan</label>
+                    <input type="text" id="newRoomName" class="form-control mb-3">
+                    <label class="login-label">Kapasitas</label>
                     <input type="text" id="newRoomCap" class="form-control mb-3" placeholder="Contoh: 10 Orang">
-                    <label class="form-label-custom">Fasilitas</label>
-                    <input type="text" id="newRoomFac" class="form-control mb-3" placeholder="Contoh: AC, LAN, Projector">
+                    <label class="login-label">Fasilitas</label>
+                    <input type="text" id="newRoomFac" class="form-control mb-3" placeholder="Contoh: AC, WiFi, TV">
                 </div>
                 <div class="modal-footer border-secondary">
-                    <button onclick="addRoom()" class="btn btn-it px-4">SIMPAN RUANGAN</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button onclick="addRoom()" class="btn btn-it px-4">Simpan</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let rooms = JSON.parse(localStorage.getItem('rx_rooms')) || [
+        let rooms = JSON.parse(localStorage.getItem('it_rooms')) || [
             { nama: "VIP Executive", cap: "8 Pax", facility: "AC, Smart TV" },
-            { nama: "Server Room A", cap: "3 Pax", facility: "Rack, UPS" }
+            { nama: "Server Room A", cap: "3 Pax", facility: "Rack Access" }
         ];
 
         window.onload = () => {
-            new QRCode(document.getElementById("qrcode"), { text: window.location.href + "?mode=user", width: 130, height: 130 });
-            renderCalendar();
+            new QRCode(document.getElementById("qrcode"), { text: window.location.href, width: 140, height: 140 });
         };
+
+        function showModal() { 
+            var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+            myModal.show();
+        }
 
         function prosesLogin() {
             const u = document.getElementById('adminUser').value;
@@ -173,20 +180,19 @@
             if(u === "admin" && p === "admin123") {
                 document.getElementById('gatewayPage').style.display = 'none';
                 document.getElementById('dashboardPage').style.display = 'block';
-                refreshRooms();
-                tampilkanData();
-            } else { alert("ACCESS DENIED!"); }
+                refreshRooms(); tampilkanData(); renderCalendar();
+            } else { alert("Akses Ditolak!"); }
         }
 
         function addRoom() {
             const nama = document.getElementById('newRoomName').value;
             const cap = document.getElementById('newRoomCap').value;
             const facility = document.getElementById('newRoomFac').value;
-            if(!nama) return alert("Nama wajib diisi!");
+            if(!nama) return alert("Isi nama ruangan!");
             rooms.push({ nama, cap, facility });
-            localStorage.setItem('rx_rooms', JSON.stringify(rooms));
+            localStorage.setItem('it_rooms', JSON.stringify(rooms));
             refreshRooms();
-            bootstrap.Modal.getInstance(document.getElementById('modalAddRoom')).hide();
+            bootstrap.Modal.getInstance(document.getElementById('myModal')).hide();
         }
 
         function refreshRooms() {
@@ -196,8 +202,8 @@
         }
 
         function updateRoomInfo() {
-            const selected = rooms.find(r => r.nama === document.getElementById('ruangan').value);
-            if(selected) document.getElementById('roomDetail').innerHTML = `<i class="fas fa-users me-1 text-info"></i> ${selected.cap} | <i class="fas fa-tools me-1 text-info"></i> ${selected.facility}`;
+            const sel = rooms.find(r => r.nama === document.getElementById('ruangan').value);
+            if(sel) document.getElementById('roomDetail').innerHTML = `Cap: ${sel.cap} | Fac: ${sel.facility}`;
         }
 
         document.getElementById('bookingForm').addEventListener('submit', function(e) {
@@ -211,21 +217,21 @@
                 jamSelesai: document.getElementById('jamSelesai').value,
                 status: "PENDING"
             };
-            let db = JSON.parse(localStorage.getItem('rx_db')) || [];
+            let db = JSON.parse(localStorage.getItem('it_db')) || [];
             db.unshift(data);
-            localStorage.setItem('rx_db', JSON.stringify(db));
+            localStorage.setItem('it_db', JSON.stringify(db));
             this.reset(); tampilkanData(); renderCalendar();
         });
 
         function tampilkanData() {
-            let db = JSON.parse(localStorage.getItem('rx_db')) || [];
+            let db = JSON.parse(localStorage.getItem('it_db')) || [];
             document.getElementById('daftarBooking').innerHTML = db.map((item, idx) => `
-                <tr class="align-middle">
-                    <td><div class="fw-bold">${item.nama.toUpperCase()}</div><code class="opacity-50">ID-${100+idx}</code></td>
-                    <td class="text-info fw-bold">${item.ruangan}</td>
-                    <td><div class="fw-bold text-primary">${item.jamMulai} - ${item.jamSelesai}</div><small class="opacity-50">${item.tglMulai}</small></td>
-                    <td><span class="badge ${item.status === 'PENDING' ? 'bg-warning' : 'bg-success'} text-dark">${item.status}</span></td>
-                    <td class="text-end"><button class="btn btn-sm btn-outline-danger p-1" onclick="hapus(${idx})"><i class="fas fa-trash-alt"></i></button></td>
+                <tr>
+                    <td><b>${item.nama.toUpperCase()}</b></td>
+                    <td class="text-info">${item.ruangan}</td>
+                    <td>${item.jamMulai}-${item.jamSelesai}</td>
+                    <td><span class="badge ${item.status==='PENDING'?'bg-warning':'bg-success'} text-dark">${item.status[0]}</span></td>
+                    <td><button class="btn btn-sm text-danger" onclick="hapus(${idx})"><i class="fas fa-trash"></i></button></td>
                 </tr>
             `).join('');
             document.getElementById('statPending').innerText = db.filter(b => b.status === 'PENDING').length;
@@ -234,16 +240,15 @@
 
         function renderCalendar() {
             const grid = document.getElementById('miniCalendar');
-            let db = JSON.parse(localStorage.getItem('rx_db')) || [];
+            let db = JSON.parse(localStorage.getItem('it_db')) || [];
             let booked = db.map(i => new Date(i.tglMulai).getDate());
             grid.innerHTML = '';
-            for(let i=1; i<=31; i++) grid.innerHTML += `<div class="cal-day ${booked.includes(i) ? 'cal-booked' : ''}">${i}</div>`;
+            for(let i=1; i<=31; i++) grid.innerHTML += `<div class="cal-day ${booked.includes(i)?'cal-booked':''}">${i}</div>`;
         }
 
         function hapus(idx) {
-            let db = JSON.parse(localStorage.getItem('rx_db'));
-            db.splice(idx, 1);
-            localStorage.setItem('rx_db', JSON.stringify(db));
+            let db = JSON.parse(localStorage.getItem('it_db'));
+            db.splice(idx, 1); localStorage.setItem('it_db', JSON.stringify(db));
             tampilkanData(); renderCalendar();
         }
     </script>
