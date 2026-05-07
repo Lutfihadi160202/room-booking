@@ -3,41 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RM.X | IT OPERATIONS HUB V4</title>
+    <title>OPS.CENTER | ROOM MANAGEMENT V5</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root { --primary: #00f2ff; --secondary: #7000ff; --success: #22c55e; --danger: #ef4444; --bg: #020617; --card: rgba(15, 23, 42, 0.8); --border: #1e293b; --text: #ffffff; }
-        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; min-height: 100vh; background-image: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #020617 80%); }
-
+        :root { --primary: #00f2ff; --secondary: #7000ff; --bg: #020617; --card: #0f172a; --border: #1e293b; --text: #ffffff; }
+        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        
         /* SIDEBAR */
-        .sidebar { width: 260px; position: fixed; height: 100vh; background: rgba(7, 11, 23, 0.9); border-right: 1px solid var(--border); padding: 2rem; backdrop-filter: blur(15px); z-index: 1000; }
-        .main-content { margin-left: 260px; padding: 2rem; }
+        .sidebar { width: 240px; position: fixed; height: 100vh; background: #070b17; border-right: 1px solid var(--border); padding: 1.5rem; z-index: 1000; }
+        .nav-link { color: #94a3b8; border-radius: 10px; margin-bottom: 8px; transition: 0.3s; cursor: pointer; }
+        .nav-link:hover, .nav-link.active { background: rgba(0, 242, 255, 0.1); color: var(--primary); }
 
-        /* CARDS & UI */
-        .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; margin-bottom: 1.5rem; backdrop-filter: blur(10px); }
-        .form-label-cyber { color: var(--primary); font-weight: 800; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; }
-        .form-control, .form-select { background: rgba(30, 41, 59, 0.7) !important; border: 1px solid var(--border) !important; color: white !important; border-radius: 12px; }
+        /* CONTENT AREA */
+        .main-content { margin-left: 240px; padding: 2rem; min-height: 100vh; background: radial-gradient(circle at top right, #1e1b4b, #020617); }
+        .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 15px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
         
-        /* ACTION BUTTONS (DARI GAMBAR REF) */
-        .btn-it { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; font-weight: 800; border-radius: 12px; padding: 12px; transition: 0.3s; width: 100%; }
-        .btn-action { width: 30px; height: 30px; border-radius: 8px; border: none; color: white; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 0.8rem; }
-        
-        /* ADMIN ACTIVITY (DARI GAMBAR REF) */
-        .activity-feed { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 12px; height: 160px; overflow-y: auto; font-family: 'JetBrains Mono', monospace; border: 1px solid var(--border); }
-        .feed-item { font-size: 0.7rem; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--primary); }
+        /* HEADERS */
+        .cyber-label { color: var(--primary); font-weight: 800; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 8px; }
+        .stat-value { font-size: 2rem; font-weight: 800; line-height: 1; }
 
-        /* MINI CALENDAR */
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; width: 220px; }
-        .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; border-radius: 6px; background: #1e293b; color: #64748b; font-weight: 600; }
-        .cal-booked { background: var(--secondary); color: white; box-shadow: 0 0 10px var(--secondary); }
+        /* FORMS */
+        .form-control, .form-select { background: #1e293b !important; border: 1px solid var(--border) !important; color: white !important; border-radius: 10px; padding: 10px; font-size: 0.9rem; }
+        .btn-it { background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; color: white; font-weight: 700; border-radius: 10px; padding: 12px; width: 100%; }
 
-        .status-pill { padding: 4px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; border: 1px solid currentColor; }
-        .status-pending { color: #eab308; background: rgba(234, 179, 8, 0.1); }
-        .status-approved { color: #22c55e; background: rgba(34, 197, 94, 0.1); }
-        .status-rejected { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+        /* CALENDAR MINI */
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 200px; }
+        .cal-day { aspect-ratio: 1; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; background: #1e293b; border-radius: 4px; color: #475569; }
+        .cal-today { background: var(--secondary); color: white; box-shadow: 0 0 10px var(--secondary); }
+
+        /* LOG ACTIVITY */
+        .log-terminal { background: #070b17; border-radius: 10px; padding: 15px; height: 180px; overflow-y: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; border: 1px solid var(--border); }
+        .log-entry { color: var(--primary); margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+        /* ACTION BUTTONS */
+        .btn-circle { width: 32px; height: 32px; border-radius: 8px; border: none; color: white; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .status-pill { padding: 4px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 800; }
+        .st-approved { background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid #22c55e; }
+        .st-pending { background: rgba(234, 179, 8, 0.1); color: #eab308; border: 1px solid #eab308; }
+        .st-rejected { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid #ef4444; }
     </style>
 </head>
 <body>
@@ -45,91 +51,108 @@
     <div class="sidebar">
         <h4 class="text-info fw-bold mb-5" style="letter-spacing: 2px;">OPS.CENTER</h4>
         <div class="nav flex-column">
-            <a href="#" class="nav-link text-info mb-3"><i class="fas fa-th-large me-2"></i> Dashboard</a>
-            <a href="#" onclick="showAddRoom()" class="nav-link text-white mb-3 opacity-75"><i class="fas fa-plus-circle me-2"></i> Add Node</a>
+            <div class="nav-link active"><i class="fas fa-th-large me-2"></i> Dashboard</div>
+            <div class="nav-link" onclick="showRoomManager()"><i class="fas fa-tools me-2"></i> Kelola Ruangan</div>
         </div>
-        <button onclick="location.reload()" class="btn btn-outline-danger btn-sm w-100" style="position: absolute; bottom: 2rem; width: 200px;">TERMINATE</button>
+        <button onclick="location.reload()" class="btn btn-outline-danger btn-sm w-100" style="position: absolute; bottom: 2rem; width: 190px;">TERMINATE</button>
     </div>
 
     <div class="main-content">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex gap-3">
-                <div class="glass-card m-0 py-2 px-4">
-                    <span class="form-label-cyber m-0">Waiting</span><h3 class="m-0 text-warning fw-bold" id="statPending">0</h3>
-                </div>
-                <div class="glass-card m-0 py-2 px-4">
-                    <span class="form-label-cyber m-0">Approved</span><h3 class="m-0 text-success fw-bold" id="statApproved">0</h3>
-                </div>
+        <div class="row mb-4 align-items-center">
+            <div class="col-md-6">
+                <h2 class="fw-bold m-0">TRAFFIC <span class="text-info">CONTROL</span></h2>
+                <p class="text-muted small">System Administrator Operations Hub</p>
             </div>
-            <div class="glass-card m-0 p-3">
-                <div class="cal-grid" id="miniCalendar"></div>
+            <div class="col-md-6 d-flex justify-content-end gap-3">
+                <div class="glass-card m-0 py-2 px-4 text-center">
+                    <span class="cyber-label">Waiting</span><div class="stat-value text-warning" id="statWaiting">0</div>
+                </div>
+                <div class="glass-card m-0 py-2 px-4 text-center">
+                    <span class="cyber-label">Approved</span><div class="stat-value text-success" id="statApproved">0</div>
+                </div>
+                <div class="glass-card m-0 p-2">
+                    <div class="cal-grid" id="miniCalendar"></div>
+                </div>
             </div>
         </div>
 
-        <div class="row g-4">
+        <div class="row">
             <div class="col-lg-4">
                 <div class="glass-card">
-                    <h6 class="text-primary fw-bold mb-4"><i class="fas fa-bolt me-2"></i>QUICK DEPLOY</h6>
+                    <span class="cyber-label mb-3"><i class="fas fa-plus-circle me-2"></i>Quick Deploy Reservation</span>
                     <form id="bookingForm">
-                        <label class="form-label-cyber text-white">Requester</label>
-                        <input type="text" id="nama" class="form-control mb-3" placeholder="Name/Dept..." required>
+                        <label class="cyber-label text-white opacity-50">Nama / Departemen</label>
+                        <input type="text" id="nama" class="form-control mb-3" placeholder="Contoh: IT Support" required>
                         
-                        <label class="form-label-cyber text-white">Select Node</label>
-                        <select id="ruangan" class="form-select mb-3" onchange="updateRoomInfo()"></select>
-                        
+                        <label class="cyber-label text-white opacity-50">Pilih Ruangan</label>
+                        <select id="ruangan" class="form-select mb-2" onchange="updateRoomInfo()"></select>
+                        <div id="roomDetail" class="small mb-3 text-info p-2 bg-dark rounded border border-secondary" style="font-size: 0.7rem;"></div>
+
                         <div class="row g-2 mb-4">
                             <div class="col-6">
-                                <label class="form-label-cyber text-white">Start</label>
-                                <input type="datetime-local" id="waktuMulai" class="form-control">
+                                <label class="cyber-label text-white opacity-50">Waktu Mulai</label>
+                                <input type="datetime-local" id="tglMulai" class="form-control">
                             </div>
                             <div class="col-6">
-                                <label class="form-label-cyber text-white">End</label>
-                                <input type="datetime-local" id="waktuSelesai" class="form-control">
+                                <label class="cyber-label text-white opacity-50">Waktu Selesai</label>
+                                <input type="datetime-local" id="tglSelesai" class="form-control">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-it">DIRECT APPROVE</button>
+                        <button type="submit" class="btn btn-it">DIRECT DEPLOY (APPROVE)</button>
                     </form>
                 </div>
 
                 <div class="glass-card">
-                    <label class="form-label-cyber">Admin Activity Log</label>
-                    <div class="activity-feed" id="activityFeed">
-                        <div class="feed-item">System initialized...</div>
+                    <span class="cyber-label">Admin Activity Log</span>
+                    <div class="log-terminal" id="activityLog">
+                        <div class="log-entry">> System Online...</div>
                     </div>
                 </div>
             </div>
 
             <div class="col-lg-8">
                 <div class="glass-card">
-                    <div class="d-flex justify-content-between mb-4">
-                        <h6 class="text-primary fw-bold m-0 uppercase">Traffic Control Management</h6>
-                        <span class="badge bg-info text-dark" style="font-size: 0.6rem;">LIVE DATABASE</span>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <span class="cyber-label m-0">Live Traffic Management</span>
+                        <span class="badge bg-primary text-dark" style="font-size: 0.6rem;">REALTIME DATABASE</span>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-dark table-hover align-middle">
-                            <thead class="small text-muted">
+                        <table class="table table-dark table-hover align-middle" style="font-size: 0.85rem;">
+                            <thead class="text-muted border-secondary">
                                 <tr><th>IDENTIFIER</th><th>ROOM</th><th>STATUS</th><th class="text-end">ACTION</th></tr>
                             </thead>
                             <tbody id="mainTable"></tbody>
                         </table>
                     </div>
                 </div>
-
-                <div class="glass-card" style="background: rgba(0,242,255,0.05)">
-                    <label class="form-label-cyber">Recent History Node</label>
-                    <div class="row g-2" id="historyList"></div>
-                </div>
+                
+                <span class="cyber-label ms-2">Recent History Nodes</span>
+                <div class="row g-2 mt-1" id="historyRow"></div>
             </div>
         </div>
     </div>
 
-    <div id="roomModal" class="modal fade" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
+    <div class="modal fade" id="roomManagerModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content bg-dark border-info">
+                <div class="modal-header border-secondary">
+                    <h6 class="modal-title text-info fw-bold">MASTER DATA RUANGAN</h6>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
                 <div class="modal-body p-4">
-                    <h6 class="text-info fw-bold mb-3">ADD NEW NODE</h6>
-                    <input type="text" id="newRoomName" class="form-control mb-3" placeholder="Room Name">
-                    <button onclick="addRoom()" class="btn btn-it">SAVE NODE</button>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <span class="cyber-label">Tambah Ruangan Baru</span>
+                            <input type="text" id="newRoomName" class="form-control mb-2" placeholder="Nama Ruangan">
+                            <input type="text" id="newRoomCap" class="form-control mb-2" placeholder="Kapasitas (pax)">
+                            <textarea id="newRoomFac" class="form-control mb-3" placeholder="Fasilitas (pisahkan koma)"></textarea>
+                            <button onclick="addRoom()" class="btn btn-it">SIMPAN RUANGAN</button>
+                        </div>
+                        <div class="col-md-7">
+                            <span class="cyber-label">Daftar Ruangan Aktif</span>
+                            <div id="roomListContainer" class="bg-black bg-opacity-25 rounded p-2" style="max-height: 250px; overflow-y: auto;"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -137,84 +160,131 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let db = JSON.parse(localStorage.getItem('cyber_db')) || [];
-        let rooms = JSON.parse(localStorage.getItem('cyber_rooms')) || [
-            { nama: "RUANG MEETING I" }, { nama: "RUANG MEETING II" }
+        // DATA STORAGE
+        let rooms = JSON.parse(localStorage.getItem('ops_rooms')) || [
+            { nama: "RUANG MEETING I", cap: "12 Pax", fac: "Projector, AC, Smart TV" },
+            { nama: "WAR ROOM", cap: "8 Pax", fac: "Fiber Internet, Whiteboard" }
         ];
+        let bookings = JSON.parse(localStorage.getItem('ops_bookings')) || [];
 
-        function showAddRoom() { new bootstrap.Modal(document.getElementById('roomModal')).show(); }
-
-        function addRoom() {
-            rooms.push({ nama: document.getElementById('newRoomName').value.toUpperCase() });
-            localStorage.setItem('cyber_rooms', JSON.stringify(rooms));
-            location.reload();
+        function showRoomManager() { 
+            renderRoomList();
+            new bootstrap.Modal(document.getElementById('roomManagerModal')).show(); 
         }
 
-        function refreshUI() {
+        function addRoom() {
+            const name = document.getElementById('newRoomName').value;
+            if(!name) return alert("Nama ruangan wajib diisi!");
+            rooms.push({
+                nama: name.toUpperCase(),
+                cap: document.getElementById('newRoomCap').value || "-",
+                fac: document.getElementById('newRoomFac').value || "-"
+            });
+            localStorage.setItem('ops_rooms', JSON.stringify(rooms));
+            renderRoomList(); refreshAll();
+            document.getElementById('newRoomName').value = "";
+        }
+
+        function deleteRoom(index) {
+            rooms.splice(index, 1);
+            localStorage.setItem('ops_rooms', JSON.stringify(rooms));
+            renderRoomList(); refreshAll();
+        }
+
+        function renderRoomList() {
+            document.getElementById('roomListContainer').innerHTML = rooms.map((r, i) => `
+                <div class="d-flex justify-content-between align-items-center p-2 border-bottom border-secondary small">
+                    <div><b>${r.nama}</b><br><span class="text-muted">${r.cap} | ${r.fac}</span></div>
+                    <button class="btn btn-sm btn-outline-danger border-0" onclick="deleteRoom(${i})"><i class="fas fa-trash"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function updateRoomInfo() {
+            const sel = rooms.find(r => r.nama === document.getElementById('ruangan').value);
+            if(sel) {
+                document.getElementById('roomDetail').innerHTML = `
+                    <b>Kapasitas:</b> ${sel.cap}<br>
+                    <b>Fasilitas:</b> ${sel.fac}
+                `;
+            }
+        }
+
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const data = {
+                id: Date.now(),
+                nama: document.getElementById('nama').value.toUpperCase(),
+                ruangan: document.getElementById('ruangan').value,
+                waktu: document.getElementById('tglMulai').value.replace('T', ' '),
+                status: "APPROVED"
+            };
+            bookings.unshift(data);
+            logAction(`Admin: Created & Approved reservation for ${data.nama}`);
+            saveAndRefresh();
+            this.reset();
+        });
+
+        function updateStatus(id, newStatus) {
+            const idx = bookings.findIndex(b => b.id === id);
+            bookings[idx].status = newStatus;
+            logAction(`Admin: Changed status ${bookings[idx].nama} to ${newStatus}`);
+            saveAndRefresh();
+        }
+
+        function logAction(msg) {
+            const log = document.getElementById('activityLog');
+            const time = new Date().toLocaleTimeString();
+            log.innerHTML = `<div class="log-entry">[${time}] > ${msg}</div>` + log.innerHTML;
+        }
+
+        function saveAndRefresh() {
+            localStorage.setItem('ops_bookings', JSON.stringify(bookings));
+            refreshAll();
+        }
+
+        function refreshAll() {
+            // Dropdown Ruangan
             document.getElementById('ruangan').innerHTML = rooms.map(r => `<option value="${r.nama}">${r.nama}</option>`).join('');
-            
-            document.getElementById('mainTable').innerHTML = db.map((item, idx) => `
+            updateRoomInfo();
+
+            // Table
+            document.getElementById('mainTable').innerHTML = bookings.map(b => `
                 <tr>
-                    <td><div class="fw-bold">${item.nama}</div><small class="text-muted">${item.waktu}</small></td>
-                    <td><span class="text-info">${item.ruangan}</span></td>
-                    <td><span class="status-pill status-${item.status.toLowerCase()}">${item.status}</span></td>
+                    <td><div class="fw-bold">${b.nama}</div><small class="text-muted">${b.waktu}</small></td>
+                    <td><span class="text-info fw-bold">${b.ruangan}</span></td>
+                    <td><span class="status-pill st-${b.status.toLowerCase()}">${b.status}</span></td>
                     <td class="text-end">
-                        <button class="btn-action bg-success me-1" onclick="setStatus(${idx}, 'APPROVED')"><i class="fas fa-check"></i></button>
-                        <button class="btn-action bg-danger" onclick="setStatus(${idx}, 'REJECTED')"><i class="fas fa-times"></i></button>
+                        <button class="btn-circle bg-success me-1" onclick="updateStatus(${b.id}, 'APPROVED')"><i class="fas fa-check"></i></button>
+                        <button class="btn-circle bg-danger" onclick="updateStatus(${b.id}, 'REJECTED')"><i class="fas fa-times"></i></button>
                     </td>
                 </tr>
             `).join('');
 
-            document.getElementById('statPending').innerText = db.filter(x => x.status === 'PENDING').length;
-            document.getElementById('statApproved').innerText = db.filter(x => x.status === 'APPROVED').length;
+            // Stats
+            document.getElementById('statWaiting').innerText = bookings.filter(b => b.status === 'PENDING').length;
+            document.getElementById('statApproved').innerText = bookings.filter(b => b.status === 'APPROVED').length;
 
-            document.getElementById('historyList').innerHTML = db.slice(0, 3).map(i => `
-                <div class="col-4"><div class="p-2 rounded bg-dark border border-secondary small text-truncate">
-                    <b class="text-info">${i.nama}</b><br><small>${i.ruangan}</small>
+            // History Row
+            document.getElementById('historyRow').innerHTML = bookings.slice(0, 3).map(b => `
+                <div class="col-4"><div class="p-2 glass-card m-0 small text-truncate">
+                    <b class="text-info">${b.nama}</b><br><small class="opacity-50">${b.ruangan}</small>
                 </div></div>
             `).join('');
 
             renderCalendar();
         }
 
-        document.getElementById('bookingForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const data = {
-                nama: document.getElementById('nama').value.toUpperCase(),
-                ruangan: document.getElementById('ruangan').value,
-                waktu: document.getElementById('waktuMulai').value.replace('T', ' '),
-                status: "APPROVED"
-            };
-            db.unshift(data);
-            logAction(`Admin: Create meeting for ${data.nama}`);
-            saveAndRefresh();
-        });
-
-        function setStatus(idx, status) {
-            logAction(`Admin: ${status} ${db[idx].nama}`);
-            db[idx].status = status;
-            saveAndRefresh();
-        }
-
-        function logAction(msg) {
-            const feed = document.getElementById('activityFeed');
-            feed.innerHTML = `<div class="feed-item">> ${msg}</div>` + feed.innerHTML;
-        }
-
-        function saveAndRefresh() {
-            localStorage.setItem('cyber_db', JSON.stringify(db));
-            refreshUI();
-        }
-
         function renderCalendar() {
             const grid = document.getElementById('miniCalendar');
             grid.innerHTML = '';
             for(let i=1; i<=28; i++) {
-                grid.innerHTML += `<div class="cal-day ${i === new Date().getDate() ? 'cal-booked' : ''}">${i}</div>`;
+                const isToday = i === new Date().getDate();
+                grid.innerHTML += `<div class="cal-day ${isToday ? 'cal-today' : ''}">${i}</div>`;
             }
         }
 
-        refreshUI();
+        refreshAll();
     </script>
 </body>
 </html>
