@@ -1,9 +1,8 @@
 const scriptURL = 'https://script.google.com/macros/s/AKfycby9yG2ivGODdSAzLLS8fHJM9U82mf4sJRnjbtg7GL_AQbNyZSoT3OgNzckAdMQZ9Qa9/exec';
 
-// DATA MASTER RUANGAN
 let rooms = JSON.parse(localStorage.getItem('rx_rooms_v4')) || [
-    { nama: "VIP Executive", kapasitas: 8, fasilitas: "AC, 4K TV" },
-    { nama: "Alpha Meeting", kapasitas: 20, fasilitas: "Projector" }
+    { nama: "SERVER ROOM A", kapasitas: 5, fasilitas: "Terminal, AC" },
+    { nama: "WAR ROOM", kapasitas: 15, fasilitas: "Surround Screen" }
 ];
 
 let currentFilter = 'ALL';
@@ -14,13 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
     tampilkanData();
 });
 
-// FITUR MASTER RUANGAN
+// MASTER ROOM LOGIC
 const roomForm = document.getElementById('roomForm');
 if(roomForm) {
     roomForm.addEventListener('submit', (e) => {
         e.preventDefault();
         rooms.push({
-            nama: document.getElementById('masterRuangan').value,
+            nama: document.getElementById('masterRuangan').value.toUpperCase(),
             kapasitas: document.getElementById('masterKapasitas').value,
             fasilitas: document.getElementById('masterFasilitas').value
         });
@@ -35,9 +34,9 @@ function renderMasterRooms() {
     const list = document.getElementById('listMasterRuangan');
     if(!list) return;
     list.innerHTML = rooms.map((r, i) => `
-        <tr class="align-middle border-bottom">
-            <td class="fw-bold">${r.nama}</td>
-            <td><span class="badge bg-dark">${r.kapasitas} Pax</span></td>
+        <tr class="align-middle">
+            <td class="fw-bold text-primary">${r.nama}</td>
+            <td><span class="badge bg-secondary">${r.kapasitas} NODE</span></td>
             <td class="text-muted small">${r.fasilitas}</td>
             <td class="text-end"><button class="btn btn-sm text-danger" onclick="hapusRoom(${i})"><i class="fas fa-trash"></i></button></td>
         </tr>`).join('');
@@ -56,7 +55,7 @@ function updateRoomSelect() {
     select.innerHTML = rooms.map(r => `<option value="${r.nama}" data-cap="${r.kapasitas}" data-fas="${r.fasilitas}">${r.nama}</option>`).join('');
 }
 
-// FITUR BOOKING & APPROVAL
+// BOOKING LOGIC
 const bookingForm = document.getElementById('bookingForm');
 if(bookingForm) {
     bookingForm.addEventListener('submit', function(e) {
@@ -84,13 +83,12 @@ if(bookingForm) {
 
         bookingForm.reset();
         tampilkanData();
-        alert('Permintaan terkirim! Menunggu approval admin.');
     });
 }
 
 function filterData(status, btn) {
     currentFilter = status;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.btn-outline-secondary').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     tampilkanData();
 }
@@ -101,33 +99,36 @@ function tampilkanData() {
     if(!list) return;
     
     let filtered = currentFilter === 'ALL' ? bookings : bookings.filter(b => b.status === currentFilter);
-    list.innerHTML = filtered.length ? '' : '<tr><td colspan="5" class="text-center py-5 opacity-50">Data tidak ditemukan</td></tr>';
+    list.innerHTML = filtered.length ? '' : '<tr><td colspan="5" class="text-center py-5 opacity-25">NO_LOGS_FOUND</td></tr>';
 
     filtered.forEach((item, index) => {
         const originalIndex = bookings.findIndex(b => b === item);
-        let statusClass = `bg-${item.status.toLowerCase()}`;
+        const sClass = item.status.toLowerCase();
         
         list.innerHTML += `
-            <tr class="animate__animated animate__fadeInUp border-bottom">
-                <td><div class="fw-bold">${item.nama}</div><small class="text-muted">ID-${originalIndex + 101}</small></td>
-                <td><div class="fw-bold">${item.ruangan}</div><small class="badge bg-light text-dark border border-dark">${item.kapasitas} Pax</small></td>
+            <tr class="align-middle">
                 <td>
-                    <div class="fw-bold text-primary" style="font-size:0.85rem">${item.tglMulai} <span class="text-dark small">s/d</span> ${item.tglSelesai}</div>
-                    <div class="small fw-bold">${item.jamMulai} - ${item.jamSelesai} WIB</div>
+                    <div class="fw-bold">${item.nama.toUpperCase()}</div>
+                    <code class="small text-muted" style="font-size:0.65rem">ID::${originalIndex + 101}X</code>
                 </td>
-                <td><span class="status-pill ${statusClass}">${item.status}</span></td>
+                <td><div class="text-primary fw-bold" style="font-size:0.85rem">${item.ruangan}</div></td>
+                <td>
+                    <div class="small fw-bold">${item.tglMulai} <i class="fas fa-arrow-right mx-1 opacity-50"></i> ${item.tglSelesai}</div>
+                    <code class="text-secondary" style="font-size:0.75rem">${item.jamMulai} - ${item.jamSelesai}</code>
+                </td>
+                <td><span class="badge-it status-${sClass}">${item.status}</span></td>
                 <td class="text-end">
                     ${item.status === 'PENDING' ? `
-                        <button class="btn btn-approve btn-sm px-2 me-1" onclick="updateStatus(${originalIndex}, 'APPROVED')"><i class="fas fa-check"></i></button>
-                        <button class="btn btn-reject btn-sm px-2 me-1" onclick="updateStatus(${originalIndex}, 'REJECTED')"><i class="fas fa-times"></i></button>
+                        <button class="btn btn-sm btn-outline-success me-1" onclick="updateStatus(${originalIndex}, 'APPROVED')"><i class="fas fa-check"></i></button>
+                        <button class="btn btn-sm btn-outline-danger me-1" onclick="updateStatus(${originalIndex}, 'REJECTED')"><i class="fas fa-times"></i></button>
                     ` : ''}
-                    <button class="btn btn-link text-muted" onclick="hapusBooking(${originalIndex})"><i class="fas fa-trash-alt"></i></button>
+                    <button class="btn btn-sm text-muted" onclick="hapusBooking(${originalIndex})"><i class="fas fa-trash-alt"></i></button>
                 </td>
             </tr>`;
     });
 
-    document.getElementById('statPending').innerText = bookings.filter(b => b.status === 'PENDING').length;
-    document.getElementById('statApproved').innerText = bookings.filter(b => b.status === 'APPROVED').length;
+    document.getElementById('statPending').innerText = bookings.filter(b => b.status === 'PENDING').length.toString().padStart(2, '0');
+    document.getElementById('statApproved').innerText = bookings.filter(b => b.status === 'APPROVED').length.toString().padStart(2, '0');
 }
 
 function updateStatus(idx, status) {
@@ -138,7 +139,7 @@ function updateStatus(idx, status) {
 }
 
 function hapusBooking(idx) {
-    if(confirm("Hapus data ini secara permanen?")) {
+    if(confirm("TERMINATE LOG DATA?")) {
         let bookings = JSON.parse(localStorage.getItem('rx_bookings_v4'));
         bookings.splice(idx, 1);
         localStorage.setItem('rx_bookings_v4', JSON.stringify(bookings));
