@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DASHBOARD | OPS.CENTER</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root { --primary: #00f2ff; --bg: #020617; --card: #0f172a; --border: #1e293b; }
+        body { background: var(--bg); color: white; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .sidebar { background: var(--card); border-right: 1px solid var(--border); height: 100vh; padding: 2rem; position: fixed; width: 280px; }
+        .main-content { margin-left: 280px; padding: 3rem; }
+        .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; }
+        .stat-val { font-family: 'JetBrains Mono'; font-size: 2rem; color: var(--primary); }
+        #qrcode img { border: 4px solid white; border-radius: 8px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <script>
+        // Security Check: Jika belum login, tendang balik ke index.html
+        if(localStorage.getItem('isLoggedIn') !== 'true') window.location.href = "index.html";
+        function logout() { localStorage.removeItem('isLoggedIn'); window.location.href = "index.html"; }
+    </script>
+
+    <div class="sidebar d-flex flex-column">
+        <div class="brand mb-5 fs-4 fw-bold text-info">OPS.CENTER</div>
+        <div class="mb-auto">
+            <p class="small text-muted fw-bold">MENU</p>
+            <div class="nav flex-column">
+                <a href="#" class="nav-link text-white px-0 py-2"><i class="fas fa-home me-2"></i> Dashboard Overview</a>
+                <a href="display.html" class="nav-link text-white-50 px-0 py-2">TV Monitoring</a>
+            </div>
+        </div>
+        
+        <div class="glass-card p-3 mb-4 text-center">
+            <p class="small text-muted mb-2">USER_BOOKING_LINK</p>
+            <div id="qrcode" class="d-flex justify-content-center"></div>
+        </div>
+
+        <button onclick="logout()" class="btn btn-outline-danger w-100">LOGOUT SYSTEM</button>
+    </div>
+
+    <div class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h2 class="fw-bold">Welcome, Administrator</h2>
+                <p class="text-muted">Monitoring operational room booking secara real-time.</p>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="glass-card">
+                    <p class="small text-muted">TOTAL RESERVATION</p>
+                    <div class="stat-val">128</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card">
+                    <p class="small text-muted">WAITING APPROVAL</p>
+                    <div class="stat-val text-warning">03</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card">
+                    <p class="small text-muted">SYSTEM STATUS</p>
+                    <div class="stat-val text-success">HEALTHY</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h5 class="fw-bold mb-4">LATEST TRAFFIC LOGS</h5>
+            <table class="table table-dark">
+                <thead><tr class="small text-muted"><th>IDENTIFIER</th><th>ROOM</th><th>TIME</th><th>STATUS</th></tr></thead>
+                <tbody>
+                    <tr><td>BAMBANG SANTOSO</td><td>SERVER ROOM A</td><td>08:55 WIB</td><td><span class="badge bg-success">APPROVED</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        new QRCode(document.getElementById("qrcode"), {
+            text: "https://lutfihadi160202.github.io/booking-form", // Link ke form booking khusus user
+            width: 120, height: 120
+        });
+    </script>
+</body>
+</html>
