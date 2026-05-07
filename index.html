@@ -11,128 +11,268 @@
     
     <style>
         :root { --primary: #00f2ff; --secondary: #7000ff; --bg-deep: #020617; --card-bg: #0f172a; --border: #1e293b; --text-main: #f8fafc; }
-        body { background: var(--bg-deep); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.02em; }
-        .navbar { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 1rem 0; }
-        .brand-logo { font-family: 'JetBrains Mono', monospace; font-weight: 800; color: var(--primary); text-shadow: 0 0 15px rgba(0, 242, 255, 0.4); }
-        .glass-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; position: relative; overflow: hidden; height: 100%; }
-        .glass-card::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary)); }
-        .stat-label { font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; font-weight: 700; letter-spacing: 0.1em; }
-        .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 2rem; font-weight: 700; margin-top: 0.5rem; }
-        .form-control, .form-select { background: #1e293b; border: 1px solid var(--border); color: white; border-radius: 10px; padding: 10px; font-size: 0.9rem; }
-        .form-control:focus, .form-select:focus { background: #1e293b; color: white; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0, 242, 255, 0.1); }
-        .btn-it { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 10px; font-weight: 700; transition: 0.3s; }
-        .btn-it:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 242, 255, 0.3); color: white; }
-        .badge-it { padding: 4px 12px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; border: 1px solid currentColor; }
+        body { background: var(--bg-deep); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; margin: 0; }
+        
+        /* --- TAMPILAN HALAMAN LOGIN --- */
+        #loginPage {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+            position: fixed; width: 100%; z-index: 9999;
+        }
+        .login-card {
+            background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border);
+            padding: 2.5rem; border-radius: 24px; width: 100%; max-width: 400px;
+            backdrop-filter: blur(15px); box-shadow: 0 0 50px rgba(0, 242, 255, 0.1);
+            text-align: center;
+        }
+
+        /* --- TAMPILAN HALAMAN DASHBOARD --- */
+        #dashboardPage { display: none; } /* Tersembunyi sebelum login sukses */
+        
+        .sidebar { width: 280px; position: fixed; height: 100vh; background: #070b17; border-right: 1px solid var(--border); padding: 2rem; }
+        .main-content { margin-left: 280px; padding: 2.5rem; }
+
+        /* UI Card IT Style */
+        .glass-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; position: relative; overflow: hidden; margin-bottom: 1.5rem; }
+        .glass-card::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--primary), var(--secondary)); }
+        
+        .stat-label { font-size: 0.7rem; text-transform: uppercase; color: #94a3b8; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 5px; display: block; }
+        .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; color: var(--primary); }
+
+        .form-control, .form-select { background: #1e293b; border: 1px solid var(--border); color: white; border-radius: 10px; padding: 10px; }
+        .form-control:focus { background: #1e293b; color: white; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0, 242, 255, 0.1); }
+        
+        .btn-it { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; font-weight: 700; border-radius: 10px; transition: 0.3s; padding: 12px; }
+        .btn-it:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0, 242, 255, 0.4); color: white; }
+        
+        .table { color: var(--text-main); margin-bottom: 0; }
+        .table thead th { border-bottom: 2px solid var(--border); color: #64748b; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .table tbody td { border-bottom: 1px solid var(--border); padding: 1rem 0.5rem; }
+
+        .badge-it { padding: 4px 10px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; font-family: 'JetBrains Mono'; border: 1px solid currentColor; text-transform: uppercase; }
         .status-pending { color: #eab308; } .status-approved { color: #22c55e; } .status-rejected { color: #ef4444; }
-        .admin-only { display: none; } /* Hidden by default */
-        #qrcode img { margin: 0 auto; border: 5px solid white; border-radius: 10px; }
+        
+        #qrcode img { border: 6px solid white; border-radius: 12px; margin: 15px auto; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar sticky-top">
-        <div class="container d-flex justify-content-between">
-            <div class="brand-logo fs-4">OPS.CENTER/RM-X</div>
-            <div class="d-flex gap-2">
-                <a href="display.html" target="_blank" class="btn btn-sm btn-outline-info rounded-pill px-3">TV FEED</a>
-                <button id="loginBtn" class="btn btn-sm btn-primary rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#loginModal">ADMIN LOGIN</button>
-                <button id="logoutBtn" class="btn btn-sm btn-danger rounded-pill px-4 admin-only" onclick="logout()">LOGOUT</button>
+    <div id="loginPage">
+        <div class="login-card">
+            <h2 style="font-family: 'JetBrains Mono'; color: var(--primary); font-weight: 800; margin-bottom: 5px;">OPS.CENTER</h2>
+            <p class="text-muted small mb-4">RESTRICTED ACCESS AREA</p>
+            
+            <div class="mb-3 text-start">
+                <label class="stat-label">System Username</label>
+                <input type="text" id="userInput" class="form-control" placeholder="admin">
             </div>
+            <div class="mb-4 text-start">
+                <label class="stat-label">Security Password</label>
+                <input type="password" id="passInput" class="form-control" placeholder="••••••••">
+            </div>
+            <button onclick="prosesLogin()" class="btn btn-it w-100">AUTHORIZE ACCESS</button>
         </div>
-    </nav>
+    </div>
 
-    <div class="container py-4">
-        <div class="row g-4">
-            <div class="col-md-3">
-                <div class="glass-card text-center">
-                    <div class="stat-label">System Waiting</div>
-                    <div class="stat-value" id="statPending" style="color: #eab308">00</div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="glass-card text-center">
-                    <div class="stat-label">Active Bookings</div>
-                    <div class="stat-value" id="statApproved" style="color: #22c55e">00</div>
+    <div id="dashboardPage">
+        <div class="sidebar d-flex flex-column">
+            <div class="brand-logo fs-4 fw-bold text-info mb-5">RM.X / OPS</div>
+            
+            <div class="mb-auto text-center">
+                <div class="glass-card p-3 shadow-lg">
+                    <p class="stat-label mb-2">SCAN_USER_ACCESS</p>
+                    <div id="qrcode" class="d-flex justify-content-center"></div>
+                    <p class="text-muted mt-2" style="font-size: 0.6rem;">Scan to Open Booking Form</p>
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <div class="glass-card d-flex align-items-center justify-content-between">
-                    <div>
-                        <h6 class="fw-bold text-primary mb-1">QUICK_ACCESS_SCAN</h6>
-                        <p class="small opacity-50 mb-0">Scan barcode ini untuk membagikan<br>link form booking ke user lain.</p>
+            <button onclick="location.reload()" class="btn btn-outline-danger btn-sm w-100 mt-3">TERMINATE SESSION</button>
+        </div>
+
+        <div class="main-content">
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="glass-card">
+                        <span class="stat-label">Pending Approval</span>
+                        <div class="stat-value" id="statPending">00</div>
                     </div>
-                    <div id="qrcode"></div>
                 </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="glass-card">
-                    <h5 class="fw-bold mb-4 text-primary"><i class="fas fa-plus-square me-2"></i>RESERVATION_FORM</h5>
-                    <form id="bookingForm">
-                        <div class="mb-3">
-                            <label class="stat-label">Requester Name</label>
-                            <input type="text" id="nama" class="form-control" placeholder="Nama Lengkap" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="stat-label">Target Room</label>
-                            <select id="ruangan" class="form-select" required></select>
-                        </div>
-                        <div class="row g-2 mb-3">
-                            <div class="col-6"><label class="stat-label">Start Date</label><input type="date" id="tglMulai" class="form-control" required></div>
-                            <div class="col-6"><label class="stat-label">End Date</label><input type="date" id="tglSelesai" class="form-control" required></div>
-                        </div>
-                        <div class="row g-2 mb-4">
-                            <div class="col-6"><label class="stat-label">Start Time</label><input type="time" id="jamMulai" class="form-control" required></div>
-                            <div class="col-6"><label class="stat-label">End Time</label><input type="time" id="jamSelesai" class="form-control" required></div>
-                        </div>
-                        <button type="submit" class="btn btn-it w-100 py-2">SUBMIT REQUEST</button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="col-lg-8">
-                <div class="glass-card">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="fw-bold m-0"><i class="fas fa-database me-2 text-primary"></i>TRAFFIC_LOGS</h5>
-                        <div class="btn-group btn-group-sm">
-                            <button class="btn btn-outline-secondary active" onclick="filterData('ALL', this)">ALL</button>
-                            <button class="btn btn-outline-secondary" onclick="filterData('PENDING', this)">PENDING</button>
-                        </div>
+                <div class="col-md-4">
+                    <div class="glass-card">
+                        <span class="stat-label">Approved Logs</span>
+                        <div class="stat-value" id="statApproved" style="color: #22c55e">00</div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr class="stat-label">
-                                    <th>IDENTIFIER</th>
-                                    <th>ROOM</th>
-                                    <th>SCHEDULE</th>
-                                    <th>STATUS</th>
-                                    <th class="text-end admin-only">OP</th>
-                                </tr>
-                            </thead>
-                            <tbody id="daftarBooking" style="font-size: 0.85rem;"></tbody>
-                        </table>
+                </div>
+                <div class="col-md-4 text-end d-flex align-items-center justify-content-end">
+                    <a href="display.html" target="_blank" class="btn btn-outline-info rounded-pill px-4">
+                        <i class="fas fa-tv me-2"></i> MONITORING FEED
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="glass-card">
+                        <h6 class="fw-bold mb-4 text-primary"><i class="fas fa-plus-circle me-2"></i>NEW_RESERVATION</h6>
+                        <form id="bookingForm">
+                            <div class="mb-3">
+                                <label class="stat-label">Requester Name</label>
+                                <input type="text" id="nama" class="form-control" placeholder="Nama Lengkap..." required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="stat-label">Assign Room</label>
+                                <select id="ruangan" class="form-select" required></select>
+                            </div>
+                            <div class="row g-2 mb-3">
+                                <div class="col-6"><label class="stat-label">Start Date</label><input type="date" id="tglMulai" class="form-control" required></div>
+                                <div class="col-6"><label class="stat-label">End Date</label><input type="date" id="tglSelesai" class="form-control" required></div>
+                            </div>
+                            <div class="row g-2 mb-4">
+                                <div class="col-6"><label class="stat-label">Start Time</label><input type="time" id="jamMulai" class="form-control" required></div>
+                                <div class="col-6"><label class="stat-label">End Time</label><input type="time" id="jamSelesai" class="form-control" required></div>
+                            </div>
+                            <button type="submit" class="btn btn-it w-100">EXECUTE LOG</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="glass-card">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h6 class="fw-bold text-primary m-0"><i class="fas fa-server me-2"></i>TRAFFIC_LOGS</h6>
+                            <div class="small opacity-50 fw-bold" style="font-size: 0.6rem;">STATUS: REALTIME</div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>IDENTIFIER</th>
+                                        <th>NODE_ROOM</th>
+                                        <th>TIME_FRAME</th>
+                                        <th>STATUS</th>
+                                        <th class="text-end">OP</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="daftarBooking" style="font-size: 0.8rem;">
+                                    </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="loginModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content bg-dark border border-primary">
-                <div class="modal-body p-4 text-center">
-                    <i class="fas fa-lock-open mb-3 text-primary fa-2x"></i>
-                    <h6 class="fw-bold mb-3">ADMIN_AUTHENTICATION</h6>
-                    <input type="password" id="adminPass" class="form-control text-center mb-3" placeholder="Enter Password">
-                    <button class="btn btn-it w-100" onclick="login()">AUTHORIZE</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <script>
+        // Konfigurasi API
+        const scriptURL = 'https://script.google.com/macros/s/AKfycby9yG2ivGODdSAzLLS8fHJM9U82mf4sJRnjbtg7GL_AQbNyZSoT3OgNzckAdMQZ9Qa9/exec';
+        
+        let rooms = [
+            { nama: "SERVER ROOM A" }, { nama: "WAR ROOM" }, { nama: "MEETING ROOM 1" }, { nama: "LAB NETWORKING" }
+        ];
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
+        // 1. Fungsi Login
+        function prosesLogin() {
+            const u = document.getElementById('userInput').value;
+            const p = document.getElementById('passInput').value;
+            
+            if(u === "admin" && p === "admin123") {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboardPage').style.display = 'block';
+                mulaiAplikasi();
+            } else {
+                alert("ACCESS DENIED: Username atau Password Salah!");
+            }
+        }
+
+        // 2. Fungsi Utama Dashboard
+        function mulaiAplikasi() {
+            updateRoomSelect();
+            tampilkanData();
+            // Generate QR Code otomatis
+            new QRCode(document.getElementById("qrcode"), {
+                text: window.location.href,
+                width: 100, height: 100
+            });
+        }
+
+        function updateRoomSelect() {
+            const select = document.getElementById('ruangan');
+            select.innerHTML = rooms.map(r => `<option value="${r.nama}">${r.nama}</option>`).join('');
+        }
+
+        // 3. Handle Submit Booking
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const data = {
+                nama: document.getElementById('nama').value,
+                ruangan: document.getElementById('ruangan').value,
+                tglMulai: document.getElementById('tglMulai').value,
+                tglSelesai: document.getElementById('tglSelesai').value,
+                jamMulai: document.getElementById('jamMulai').value,
+                jamSelesai: document.getElementById('jamSelesai').value,
+                status: "PENDING"
+            };
+
+            let bookings = JSON.parse(localStorage.getItem('it_ops_data')) || [];
+            bookings.unshift(data); // Tambah ke atas
+            localStorage.setItem('it_ops_data', JSON.stringify(bookings));
+            
+            fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
+            this.reset();
+            tampilkanData();
+        });
+
+        // 4. Render Tabel Data
+        function tampilkanData() {
+            let bookings = JSON.parse(localStorage.getItem('it_ops_data')) || [];
+            const list = document.getElementById('daftarBooking');
+            
+            list.innerHTML = bookings.length === 0 ? '<tr><td colspan="5" class="text-center opacity-25 py-4">NO_LOGS_AVAILABLE</td></tr>' : '';
+
+            bookings.forEach((item, idx) => {
+                list.innerHTML += `
+                    <tr class="align-middle">
+                        <td>
+                            <div class="fw-bold">${item.nama.toUpperCase()}</div>
+                            <code class="text-muted" style="font-size:0.6rem">ID_LOG:${idx+100}</code>
+                        </td>
+                        <td class="text-primary fw-bold">${item.ruangan}</td>
+                        <td>
+                            <div class="fw-bold" style="font-size:0.75rem">${item.jamMulai} - ${item.jamSelesai}</div>
+                            <div class="small opacity-50">${item.tglMulai}</div>
+                        </td>
+                        <td><span class="badge-it status-${item.status.toLowerCase()}">${item.status}</span></td>
+                        <td class="text-end">
+                            ${item.status === 'PENDING' ? `
+                                <button class="btn btn-sm btn-outline-success p-1" onclick="ubahStatus(${idx}, 'APPROVED')"><i class="fas fa-check"></i></button>
+                                <button class="btn btn-sm btn-outline-danger p-1" onclick="ubahStatus(${idx}, 'REJECTED')"><i class="fas fa-times"></i></button>
+                            ` : `<button class="btn btn-sm btn-outline-secondary p-1" onclick="hapusData(${idx})"><i class="fas fa-trash"></i></button>`}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // Update Counter Statistik
+            document.getElementById('statPending').innerText = bookings.filter(b => b.status === 'PENDING').length.toString().padStart(2, '0');
+            document.getElementById('statApproved').innerText = bookings.filter(b => b.status === 'APPROVED').length.toString().padStart(2, '0');
+        }
+
+        function ubahStatus(idx, status) {
+            let bookings = JSON.parse(localStorage.getItem('it_ops_data'));
+            bookings[idx].status = status;
+            localStorage.setItem('it_ops_data', JSON.stringify(bookings));
+            tampilkanData();
+        }
+
+        function hapusData(idx) {
+            if(confirm("TERMINATE THIS LOG?")) {
+                let bookings = JSON.parse(localStorage.getItem('it_ops_data'));
+                bookings.splice(idx, 1);
+                localStorage.setItem('it_ops_data', JSON.stringify(bookings));
+                tampilkanData();
+            }
+        }
+    </script>
 </body>
 </html>
