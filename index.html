@@ -3,103 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SBI MEETING FLOW V3.5 PROFESSIONAL</title>
+    <title>RM.X | IT OPERATIONS HUB V4</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root { --primary: #00f2ff; --secondary: #3b82f6; --success: #22c55e; --danger: #ef4444; --bg: #0b1120; --card: #161f32; --border: #1e293b; --text: #ffffff; }
-        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; min-height: 100vh; }
+        :root { --primary: #00f2ff; --secondary: #7000ff; --success: #22c55e; --danger: #ef4444; --bg: #020617; --card: rgba(15, 23, 42, 0.8); --border: #1e293b; --text: #ffffff; }
+        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; min-height: 100vh; background-image: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #020617 80%); }
 
         /* SIDEBAR */
-        .sidebar { width: 260px; position: fixed; height: 100vh; background: #0f172a; border-right: 1px solid var(--border); padding: 1.5rem; z-index: 1000; }
-        .main-content { margin-left: 260px; padding: 2rem; background: radial-gradient(circle at top right, #1e293b, #0b1120); min-height: 100vh; }
+        .sidebar { width: 260px; position: fixed; height: 100vh; background: rgba(7, 11, 23, 0.9); border-right: 1px solid var(--border); padding: 2rem; backdrop-filter: blur(15px); z-index: 1000; }
+        .main-content { margin-left: 260px; padding: 2rem; }
 
-        /* UI ELEMENTS */
-        .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        .form-label-bright { color: #94a3b8; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; }
-        .form-control, .form-select { background: #0f172a !important; border: 1px solid var(--border) !important; color: white !important; border-radius: 10px; padding: 10px; }
+        /* CARDS & UI */
+        .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; margin-bottom: 1.5rem; backdrop-filter: blur(10px); }
+        .form-label-cyber { color: var(--primary); font-weight: 800; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; }
+        .form-control, .form-select { background: rgba(30, 41, 59, 0.7) !important; border: 1px solid var(--border) !important; color: white !important; border-radius: 12px; }
         
-        /* BUTTONS */
-        .btn-direct { background: var(--secondary); color: white; border: none; font-weight: 700; border-radius: 10px; padding: 12px; width: 100%; transition: 0.3s; }
-        .btn-direct:hover { background: #2563eb; transform: translateY(-2px); }
-        .btn-action { width: 32px; height: 32px; border-radius: 8px; border: none; color: white; display: inline-flex; align-items: center; justify-content: center; margin-left: 5px; transition: 0.2s; }
+        /* ACTION BUTTONS (DARI GAMBAR REF) */
+        .btn-it { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; font-weight: 800; border-radius: 12px; padding: 12px; transition: 0.3s; width: 100%; }
+        .btn-action { width: 30px; height: 30px; border-radius: 8px; border: none; color: white; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 0.8rem; }
         
-        /* STATUS PILLS */
-        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.65rem; font-weight: 800; border: 1px solid transparent; }
-        .status-approved { background: rgba(34, 197, 94, 0.1); color: #22c55e; border-color: #22c55e; }
-        .status-pending { background: rgba(234, 179, 8, 0.1); color: #eab308; border-color: #eab308; }
-        .status-rejected { background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: #ef4444; }
+        /* ADMIN ACTIVITY (DARI GAMBAR REF) */
+        .activity-feed { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 12px; height: 160px; overflow-y: auto; font-family: 'JetBrains Mono', monospace; border: 1px solid var(--border); }
+        .feed-item { font-size: 0.7rem; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--primary); }
 
         /* MINI CALENDAR */
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 180px; }
-        .cal-item { aspect-ratio: 1; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; background: #1e293b; border-radius: 4px; color: #475569; }
-        .cal-active { background: var(--secondary); color: white; box-shadow: 0 0 8px var(--secondary); }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; width: 220px; }
+        .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; border-radius: 6px; background: #1e293b; color: #64748b; font-weight: 600; }
+        .cal-booked { background: var(--secondary); color: white; box-shadow: 0 0 10px var(--secondary); }
 
-        /* ACTIVITY LOG AREA */
-        .activity-feed { background: rgba(0,0,0,0.2); border-radius: 10px; padding: 10px; height: 150px; overflow-y: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; }
-        .feed-item { padding: 5px 0; border-bottom: 1px solid #1e293b; color: #3b82f6; }
+        .status-pill { padding: 4px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; border: 1px solid currentColor; }
+        .status-pending { color: #eab308; background: rgba(234, 179, 8, 0.1); }
+        .status-approved { color: #22c55e; background: rgba(34, 197, 94, 0.1); }
+        .status-rejected { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <div class="d-flex align-items-center mb-5">
-            <div class="bg-primary rounded-3 p-2 me-2"><i class="fas fa-layer-group text-dark"></i></div>
-            <h5 class="m-0 fw-bold">MEETINGFLOW</h5>
-        </div>
+        <h4 class="text-info fw-bold mb-5" style="letter-spacing: 2px;">OPS.CENTER</h4>
         <div class="nav flex-column">
-            <a href="#" class="nav-link text-white mb-3 opacity-50"><i class="fas fa-home me-2"></i> Dashboard</a>
-            <a href="#" onclick="showAddRoom()" class="nav-link text-white mb-3"><i class="fas fa-door-open me-2"></i> Master Ruangan</a>
-            <a href="#" class="nav-link text-white mb-3 opacity-50"><i class="fas fa-calendar-alt me-2"></i> Kalender Jadwal</a>
+            <a href="#" class="nav-link text-info mb-3"><i class="fas fa-th-large me-2"></i> Dashboard</a>
+            <a href="#" onclick="showAddRoom()" class="nav-link text-white mb-3 opacity-75"><i class="fas fa-plus-circle me-2"></i> Add Node</a>
         </div>
-        <div style="position: absolute; bottom: 2rem; width: 80%;">
-            <button onclick="location.reload()" class="btn btn-danger w-100 rounded-4 py-2 fw-bold">LOGOUT</button>
-        </div>
+        <button onclick="location.reload()" class="btn btn-outline-danger btn-sm w-100" style="position: absolute; bottom: 2rem; width: 200px;">TERMINATE</button>
     </div>
 
     <div class="main-content">
-        <div class="d-flex justify-content-between align-items-center mb-5">
-            <div>
-                <h1 class="fw-extrabold m-0" style="letter-spacing: -2px;">ADMIN<span class="text-info">CONTROL</span></h1>
-                <p class="text-muted small">SBI MEETING FLOW V3.5 PROFESSIONAL</p>
-            </div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
             <div class="d-flex gap-3">
-                <div class="glass-card m-0 py-2 px-4 text-center">
-                    <small class="form-label-bright m-0">Monthly</small><h4 class="m-0 fw-bold" id="statTotal">0</h4>
+                <div class="glass-card m-0 py-2 px-4">
+                    <span class="form-label-cyber m-0">Waiting</span><h3 class="m-0 text-warning fw-bold" id="statPending">0</h3>
                 </div>
-                <div class="glass-card m-0 py-2 px-4 text-center">
-                    <small class="form-label-bright m-0">Pending</small><h4 class="m-0 fw-bold text-warning" id="statPending">0</h4>
+                <div class="glass-card m-0 py-2 px-4">
+                    <span class="form-label-cyber m-0">Approved</span><h3 class="m-0 text-success fw-bold" id="statApproved">0</h3>
                 </div>
-                <div class="glass-card m-0 py-2 px-4 text-center">
-                    <small class="form-label-bright m-0">Live Time</small><h4 class="m-0 fw-bold text-info" id="clock">00:00</h4>
-                </div>
+            </div>
+            <div class="glass-card m-0 p-3">
+                <div class="cal-grid" id="miniCalendar"></div>
             </div>
         </div>
 
         <div class="row g-4">
             <div class="col-lg-4">
                 <div class="glass-card">
-                    <h6 class="fw-bold mb-4"><i class="fas fa-plus-circle me-2 text-info"></i>QUICK <span class="text-info">BOOKING</span></h6>
+                    <h6 class="text-primary fw-bold mb-4"><i class="fas fa-bolt me-2"></i>QUICK DEPLOY</h6>
                     <form id="bookingForm">
-                        <label class="form-label-bright">Pilih Ruangan</label>
+                        <label class="form-label-cyber text-white">Requester</label>
+                        <input type="text" id="nama" class="form-control mb-3" placeholder="Name/Dept..." required>
+                        
+                        <label class="form-label-cyber text-white">Select Node</label>
                         <select id="ruangan" class="form-select mb-3" onchange="updateRoomInfo()"></select>
-                        <div id="roomDetail" class="small mb-3 text-info opacity-75"></div>
-
-                        <label class="form-label-bright">Nama / Dept</label>
-                        <input type="text" id="nama" class="form-control mb-3" placeholder="Contoh: IT Dept" required>
-
+                        
                         <div class="row g-2 mb-4">
-                            <div class="col-6"><label class="form-label-bright">Mulai</label><input type="datetime-local" id="waktuMulai" class="form-control"></div>
-                            <div class="col-6"><label class="form-label-bright">Selesai</label><input type="datetime-local" id="waktuSelesai" class="form-control"></div>
+                            <div class="col-6">
+                                <label class="form-label-cyber text-white">Start</label>
+                                <input type="datetime-local" id="waktuMulai" class="form-control">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label-cyber text-white">End</label>
+                                <input type="datetime-local" id="waktuSelesai" class="form-control">
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-direct">DIRECT APPROVE</button>
+                        <button type="submit" class="btn btn-it">DIRECT APPROVE</button>
                     </form>
                 </div>
 
                 <div class="glass-card">
-                    <label class="form-label-bright">Admin Activity</label>
+                    <label class="form-label-cyber">Admin Activity Log</label>
                     <div class="activity-feed" id="activityFeed">
                         <div class="feed-item">System initialized...</div>
                     </div>
@@ -107,37 +100,36 @@
             </div>
 
             <div class="col-lg-8">
-                <div class="glass-card overflow-hidden">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h6 class="fw-bold m-0 text-uppercase">Management Table</h6>
-                        <div class="cal-grid" id="miniCalendar"></div>
+                <div class="glass-card">
+                    <div class="d-flex justify-content-between mb-4">
+                        <h6 class="text-primary fw-bold m-0 uppercase">Traffic Control Management</h6>
+                        <span class="badge bg-info text-dark" style="font-size: 0.6rem;">LIVE DATABASE</span>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-dark table-hover align-middle">
-                            <thead class="text-muted small">
-                                <tr><th>PEMINJAM</th><th>RUANGAN</th><th>STATUS</th><th class="text-end">ACTION</th></tr>
+                            <thead class="small text-muted">
+                                <tr><th>IDENTIFIER</th><th>ROOM</th><th>STATUS</th><th class="text-end">ACTION</th></tr>
                             </thead>
                             <tbody id="mainTable"></tbody>
                         </table>
                     </div>
                 </div>
 
-                <div class="glass-card" style="background: rgba(0,0,0,0.1);">
-                    <label class="form-label-bright">Recent History</label>
-                    <div class="row g-2" id="historyRow"></div>
+                <div class="glass-card" style="background: rgba(0,242,255,0.05)">
+                    <label class="form-label-cyber">Recent History Node</label>
+                    <div class="row g-2" id="historyList"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="roomModal" tabindex="-1">
+    <div id="roomModal" class="modal fade" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content bg-dark border-secondary">
+            <div class="modal-content bg-dark border-info">
                 <div class="modal-body p-4">
-                    <h6 class="text-info fw-bold mb-3">TAMBAH MASTER RUANGAN</h6>
-                    <input type="text" id="newRoomName" class="form-control mb-3" placeholder="Nama Ruangan">
-                    <input type="text" id="newRoomCap" class="form-control mb-3" placeholder="Kapasitas">
-                    <button onclick="addRoom()" class="btn btn-info w-100 fw-bold">SIMPAN RUANGAN</button>
+                    <h6 class="text-info fw-bold mb-3">ADD NEW NODE</h6>
+                    <input type="text" id="newRoomName" class="form-control mb-3" placeholder="Room Name">
+                    <button onclick="addRoom()" class="btn btn-it">SAVE NODE</button>
                 </div>
             </div>
         </div>
@@ -145,55 +137,41 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let db = JSON.parse(localStorage.getItem('sbi_v35_db')) || [];
-        let rooms = JSON.parse(localStorage.getItem('sbi_v35_rooms')) || [
-            { nama: "RUANG MEETING I", cap: "10 Pax" },
-            { nama: "RUANG MEETING II", cap: "6 Pax" }
+        let db = JSON.parse(localStorage.getItem('cyber_db')) || [];
+        let rooms = JSON.parse(localStorage.getItem('cyber_rooms')) || [
+            { nama: "RUANG MEETING I" }, { nama: "RUANG MEETING II" }
         ];
-
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-        }
-        setInterval(updateClock, 1000); updateClock();
 
         function showAddRoom() { new bootstrap.Modal(document.getElementById('roomModal')).show(); }
 
         function addRoom() {
-            rooms.push({ nama: document.getElementById('newRoomName').value.toUpperCase(), cap: document.getElementById('newRoomCap').value });
-            localStorage.setItem('sbi_v35_rooms', JSON.stringify(rooms));
+            rooms.push({ nama: document.getElementById('newRoomName').value.toUpperCase() });
+            localStorage.setItem('cyber_rooms', JSON.stringify(rooms));
             location.reload();
         }
 
         function refreshUI() {
-            // Update Room Select
             document.getElementById('ruangan').innerHTML = rooms.map(r => `<option value="${r.nama}">${r.nama}</option>`).join('');
             
-            // Update Table
             document.getElementById('mainTable').innerHTML = db.map((item, idx) => `
                 <tr>
-                    <td><div class="fw-bold">${item.nama}</div><div class="small text-muted">${item.waktu}</div></td>
-                    <td><span class="badge bg-secondary opacity-50">${item.ruangan}</span></td>
-                    <td><span class="status-badge status-${item.status.toLowerCase()}">${item.status}</span></td>
+                    <td><div class="fw-bold">${item.nama}</div><small class="text-muted">${item.waktu}</small></td>
+                    <td><span class="text-info">${item.ruangan}</span></td>
+                    <td><span class="status-pill status-${item.status.toLowerCase()}">${item.status}</span></td>
                     <td class="text-end">
-                        <button class="btn-action bg-success" onclick="setStatus(${idx}, 'APPROVED')"><i class="fas fa-check"></i></button>
+                        <button class="btn-action bg-success me-1" onclick="setStatus(${idx}, 'APPROVED')"><i class="fas fa-check"></i></button>
                         <button class="btn-action bg-danger" onclick="setStatus(${idx}, 'REJECTED')"><i class="fas fa-times"></i></button>
                     </td>
                 </tr>
             `).join('');
 
-            // Update Stats
-            document.getElementById('statTotal').innerText = db.length;
             document.getElementById('statPending').innerText = db.filter(x => x.status === 'PENDING').length;
+            document.getElementById('statApproved').innerText = db.filter(x => x.status === 'APPROVED').length;
 
-            // Update History (Bottom)
-            document.getElementById('historyRow').innerHTML = db.slice(0, 3).map(item => `
-                <div class="col-4">
-                    <div class="p-2 rounded bg-black bg-opacity-25 small">
-                        <div class="text-info fw-bold">${item.nama}</div>
-                        <div class="text-muted" style="font-size:0.6rem">${item.ruangan} | ${item.waktu}</div>
-                    </div>
-                </div>
+            document.getElementById('historyList').innerHTML = db.slice(0, 3).map(i => `
+                <div class="col-4"><div class="p-2 rounded bg-dark border border-secondary small text-truncate">
+                    <b class="text-info">${i.nama}</b><br><small>${i.ruangan}</small>
+                </div></div>
             `).join('');
 
             renderCalendar();
@@ -204,28 +182,27 @@
             const data = {
                 nama: document.getElementById('nama').value.toUpperCase(),
                 ruangan: document.getElementById('ruangan').value,
-                waktu: document.getElementById('waktuMulai').value.replace('T', ', '),
-                status: "APPROVED" // Direct approve
+                waktu: document.getElementById('waktuMulai').value.replace('T', ' '),
+                status: "APPROVED"
             };
             db.unshift(data);
-            logActivity(`admin: Create meeting for ${data.nama}`);
+            logAction(`Admin: Create meeting for ${data.nama}`);
             saveAndRefresh();
         });
 
         function setStatus(idx, status) {
-            const oldStatus = db[idx].status;
+            logAction(`Admin: ${status} ${db[idx].nama}`);
             db[idx].status = status;
-            logActivity(`admin: ${status.toLowerCase()} ${db[idx].nama}`);
             saveAndRefresh();
         }
 
-        function logActivity(msg) {
+        function logAction(msg) {
             const feed = document.getElementById('activityFeed');
-            feed.innerHTML = `<div class="feed-item">${msg}</div>` + feed.innerHTML;
+            feed.innerHTML = `<div class="feed-item">> ${msg}</div>` + feed.innerHTML;
         }
 
         function saveAndRefresh() {
-            localStorage.setItem('sbi_v35_db', JSON.stringify(db));
+            localStorage.setItem('cyber_db', JSON.stringify(db));
             refreshUI();
         }
 
@@ -233,7 +210,7 @@
             const grid = document.getElementById('miniCalendar');
             grid.innerHTML = '';
             for(let i=1; i<=28; i++) {
-                grid.innerHTML += `<div class="cal-item ${i === new Date().getDate() ? 'cal-active' : ''}">${i}</div>`;
+                grid.innerHTML += `<div class="cal-day ${i === new Date().getDate() ? 'cal-booked' : ''}">${i}</div>`;
             }
         }
 
