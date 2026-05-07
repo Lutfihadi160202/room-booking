@@ -16,21 +16,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // FITUR MASTER RUANGAN
 const roomForm = document.getElementById('roomForm');
-roomForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    rooms.push({
-        nama: document.getElementById('masterRuangan').value,
-        kapasitas: document.getElementById('masterKapasitas').value,
-        fasilitas: document.getElementById('masterFasilitas').value
+if(roomForm) {
+    roomForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        rooms.push({
+            nama: document.getElementById('masterRuangan').value,
+            kapasitas: document.getElementById('masterKapasitas').value,
+            fasilitas: document.getElementById('masterFasilitas').value
+        });
+        localStorage.setItem('rx_rooms_v4', JSON.stringify(rooms));
+        roomForm.reset();
+        updateRoomSelect();
+        renderMasterRooms();
     });
-    localStorage.setItem('rx_rooms_v4', JSON.stringify(rooms));
-    roomForm.reset();
-    updateRoomSelect();
-    renderMasterRooms();
-});
+}
 
 function renderMasterRooms() {
     const list = document.getElementById('listMasterRuangan');
+    if(!list) return;
     list.innerHTML = rooms.map((r, i) => `
         <tr class="align-middle border-bottom">
             <td class="fw-bold">${r.nama}</td>
@@ -49,37 +52,41 @@ function hapusRoom(i) {
 
 function updateRoomSelect() {
     const select = document.getElementById('ruangan');
+    if(!select) return;
     select.innerHTML = rooms.map(r => `<option value="${r.nama}" data-cap="${r.kapasitas}" data-fas="${r.fasilitas}">${r.nama}</option>`).join('');
 }
 
 // FITUR BOOKING & APPROVAL
 const bookingForm = document.getElementById('bookingForm');
-bookingForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const sel = document.getElementById('ruangan');
-    const opt = sel.options[sel.selectedIndex];
-    
-    const data = {
-        nama: document.getElementById('nama').value,
-        ruangan: sel.value,
-        kapasitas: opt.getAttribute('data-cap'),
-        fasilitas: opt.getAttribute('data-fas'),
-        tglMulai: document.getElementById('tglMulai').value,
-        jamMulai: document.getElementById('jamMulai').value,
-        status: "PENDING"
-    };
+if(bookingForm) {
+    bookingForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const sel = document.getElementById('ruangan');
+        const opt = sel.options[sel.selectedIndex];
+        
+        const data = {
+            nama: document.getElementById('nama').value,
+            ruangan: sel.value,
+            kapasitas: opt.getAttribute('data-cap'),
+            fasilitas: opt.getAttribute('data-fas'),
+            tglMulai: document.getElementById('tglMulai').value,
+            tglSelesai: document.getElementById('tglSelesai').value,
+            jamMulai: document.getElementById('jamMulai').value,
+            jamSelesai: document.getElementById('jamSelesai').value,
+            status: "PENDING"
+        };
 
-    let bookings = JSON.parse(localStorage.getItem('rx_bookings_v4')) || [];
-    bookings.unshift(data);
-    localStorage.setItem('rx_bookings_v4', JSON.stringify(bookings));
-    
-    // Kirim Ke Google Sheets
-    fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
+        let bookings = JSON.parse(localStorage.getItem('rx_bookings_v4')) || [];
+        bookings.unshift(data);
+        localStorage.setItem('rx_bookings_v4', JSON.stringify(bookings));
+        
+        fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
 
-    bookingForm.reset();
-    tampilkanData();
-    alert('Permintaan terkirim! Menunggu approval admin.');
-});
+        bookingForm.reset();
+        tampilkanData();
+        alert('Permintaan terkirim! Menunggu approval admin.');
+    });
+}
 
 function filterData(status, btn) {
     currentFilter = status;
@@ -91,13 +98,12 @@ function filterData(status, btn) {
 function tampilkanData() {
     let bookings = JSON.parse(localStorage.getItem('rx_bookings_v4')) || [];
     const list = document.getElementById('daftarBooking');
+    if(!list) return;
     
     let filtered = currentFilter === 'ALL' ? bookings : bookings.filter(b => b.status === currentFilter);
-    
     list.innerHTML = filtered.length ? '' : '<tr><td colspan="5" class="text-center py-5 opacity-50">Data tidak ditemukan</td></tr>';
 
     filtered.forEach((item, index) => {
-        // Cari index asli untuk update status
         const originalIndex = bookings.findIndex(b => b === item);
         let statusClass = `bg-${item.status.toLowerCase()}`;
         
@@ -105,7 +111,10 @@ function tampilkanData() {
             <tr class="animate__animated animate__fadeInUp border-bottom">
                 <td><div class="fw-bold">${item.nama}</div><small class="text-muted">ID-${originalIndex + 101}</small></td>
                 <td><div class="fw-bold">${item.ruangan}</div><small class="badge bg-light text-dark border border-dark">${item.kapasitas} Pax</small></td>
-                <td><div class="fw-bold text-primary">${item.tglMulai}</div><div class="small">${item.jamMulai} WIB</div></td>
+                <td>
+                    <div class="fw-bold text-primary" style="font-size:0.85rem">${item.tglMulai} <span class="text-dark small">s/d</span> ${item.tglSelesai}</div>
+                    <div class="small fw-bold">${item.jamMulai} - ${item.jamSelesai} WIB</div>
+                </td>
                 <td><span class="status-pill ${statusClass}">${item.status}</span></td>
                 <td class="text-end">
                     ${item.status === 'PENDING' ? `
@@ -117,7 +126,6 @@ function tampilkanData() {
             </tr>`;
     });
 
-    // Update Dashboard Stats
     document.getElementById('statPending').innerText = bookings.filter(b => b.status === 'PENDING').length;
     document.getElementById('statApproved').innerText = bookings.filter(b => b.status === 'APPROVED').length;
 }
