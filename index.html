@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SBI | IT OPS - ROOM CONTROL</title>
+    <title>SBI | IT OPS - ROOM HUB V6.4</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -25,13 +25,14 @@
         .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 1.5rem; margin-bottom: 1.5rem; }
         .cyber-label { color: var(--primary); font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 10px; }
 
-        /* INPUTS */
+        /* FORM */
         .form-label { color: #ffffff; font-weight: 600; font-size: 0.85rem; }
         .form-control, .form-select { background: #1e293b !important; border: 1px solid var(--border) !important; color: #ffffff !important; border-radius: 10px; padding: 10px; }
 
         /* BUTTONS */
         .btn-sbi { background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; color: white; font-weight: 800; border-radius: 12px; padding: 12px; width: 100%; transition: 0.3s; }
-        .btn-action { width: 32px; height: 32px; border-radius: 8px; border: none; color: white; margin-left: 4px; transition: 0.2s; }
+        .btn-action { width: 34px; height: 34px; border-radius: 8px; border: none; color: white; margin-left: 4px; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; }
+        .btn-action:hover { transform: scale(1.1); }
 
         /* PILLS */
         .st-pill { padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 800; border: 1px solid currentColor; text-transform: uppercase; }
@@ -52,7 +53,7 @@
             <div class="nav-link" onclick="showRoomManager()"><i class="fas fa-door-open me-3"></i> Master Ruangan</div>
         </div>
         <div class="sidebar-footer">
-            <button onclick="location.reload()" class="btn btn-outline-danger w-100 fw-bold"><i class="fas fa-power-off me-2"></i> LOGOUT</button>
+            <button onclick="location.reload()" class="btn btn-outline-danger w-100 fw-bold"><i class="fas fa-power-off me-2"></i> LOGOUT / REFRESH</button>
         </div>
     </div>
 
@@ -60,7 +61,7 @@
         <div class="row mb-4">
             <div class="col-md-8">
                 <h2 class="fw-bold m-0">TRAFFIC <span class="text-info">CONTROL</span></h2>
-                <p class="text-muted small">Solusi Bangun Indonesia - Terminal v6.3</p>
+                <p class="text-muted small">Solusi Bangun Indonesia - Ops Terminal v6.4</p>
             </div>
             <div class="col-md-4 d-flex justify-content-end">
                 <div class="glass-card m-0 py-2 px-4 border-info">
@@ -73,33 +74,33 @@
         <div class="row">
             <div class="col-lg-4">
                 <div class="glass-card">
-                    <span class="cyber-label mb-3 text-white">New Booking</span>
+                    <span class="cyber-label mb-3 text-white">Deploy New Node</span>
                     <form id="bookingForm">
-                        <label class="form-label">Nama / Dept</label>
-                        <input type="text" id="nama" class="form-control mb-3" placeholder="Input..." required>
-                        <label class="form-label">Ruangan</label>
+                        <label class="form-label">Nama / Departemen</label>
+                        <input type="text" id="nama" class="form-control mb-3" placeholder="Contoh: IT Support" required>
+                        <label class="form-label">Target Ruangan</label>
                         <select id="ruangan" class="form-select mb-2" onchange="updateRoomInfo()"></select>
-                        <div id="roomDetail" class="small mb-3 text-info p-2 bg-dark rounded border border-secondary" style="font-size: 0.75rem;"></div>
+                        <div id="roomDetail" class="small mb-3 text-info p-3 bg-dark rounded border border-secondary"></div>
                         <div class="row g-2 mb-4">
                             <div class="col-6"><label class="form-label">Mulai</label><input type="datetime-local" id="tglMulai" class="form-control" required></div>
                             <div class="col-6"><label class="form-label">Selesai</label><input type="datetime-local" id="tglSelesai" class="form-control" required></div>
                         </div>
-                        <button type="submit" class="btn btn-sbi">SUBMIT BOOKING</button>
+                        <button type="submit" class="btn btn-sbi">SUBMIT TO TRAFFIC</button>
                     </form>
                 </div>
                 <div class="glass-card">
-                    <span class="cyber-label">Activity Log</span>
+                    <span class="cyber-label">System Activity Log</span>
                     <div class="log-terminal" id="activityLog"></div>
                 </div>
             </div>
 
             <div class="col-lg-8">
                 <div class="glass-card">
-                    <span class="cyber-label mb-3">Live Traffic Table</span>
+                    <span class="cyber-label mb-3">Live Network Management</span>
                     <div class="table-responsive">
                         <table class="table table-dark table-hover align-middle">
                             <thead class="text-muted small">
-                                <tr><th>PEMINJAM</th><th>RUANGAN</th><th>STATUS</th><th class="text-end">ACTION</th></tr>
+                                <tr><th>IDENTIFIER</th><th>TARGET NODE</th><th>STATUS</th><th class="text-end">ACTION</th></tr>
                             </thead>
                             <tbody id="mainTable"></tbody>
                         </table>
@@ -111,19 +112,24 @@
 
     <div class="modal fade" id="roomManagerModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content bg-dark border-info">
+            <div class="modal-content bg-dark border-info" style="border-radius: 20px;">
                 <div class="modal-body p-4">
-                    <h5 class="text-info fw-bold mb-4">MASTER DATA RUANGAN</h5>
+                    <div class="d-flex justify-content-between mb-4">
+                        <h5 class="text-info fw-bold m-0">MASTER DATABASE RUANGAN</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
                     <div class="row g-4">
                         <div class="col-md-5">
+                            <span class="cyber-label">Input Area</span>
                             <input type="hidden" id="editIndex" value="-1">
                             <input type="text" id="newRoomName" class="form-control mb-2" placeholder="Nama Ruangan">
-                            <input type="text" id="newRoomCap" class="form-control mb-2" placeholder="Kapasitas">
-                            <textarea id="newRoomFac" class="form-control mb-3" placeholder="Fasilitas..."></textarea>
-                            <button onclick="saveRoom()" class="btn btn-sbi" id="saveBtn">SIMPAN</button>
+                            <input type="text" id="newRoomCap" class="form-control mb-2" placeholder="Kapasitas (Pax)">
+                            <textarea id="newRoomFac" class="form-control mb-3" placeholder="Fasilitas (AC, Wifi, TV...)"></textarea>
+                            <button onclick="saveRoom()" class="btn btn-sbi" id="saveBtn">SIMPAN DATA</button>
                         </div>
                         <div class="col-md-7">
-                            <div id="roomListContainer" class="bg-black p-2 rounded" style="max-height: 250px; overflow-y: auto;"></div>
+                            <span class="cyber-label">Active Nodes</span>
+                            <div id="roomListContainer" class="bg-black bg-opacity-40 rounded p-2" style="max-height: 250px; overflow-y: auto;"></div>
                         </div>
                     </div>
                 </div>
@@ -133,30 +139,37 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // DATA UTAMA
-        let rooms = JSON.parse(localStorage.getItem('sbi_v6_rooms')) || [
-            { nama: "RUANG MEETING I", cap: "10 Pax", fac: "AC, Proyektor" }
+        let rooms = JSON.parse(localStorage.getItem('sbi_v64_rooms')) || [
+            { nama: "RUANG MEETING I", cap: "12 Pax", fac: "Projector, AC, Smart TV" },
+            { nama: "WAR ROOM", cap: "8 Pax", fac: "Fiber Internet, Whiteboard" }
         ];
-        let bookings = JSON.parse(localStorage.getItem('sbi_v6_bookings')) || [];
+        let bookings = JSON.parse(localStorage.getItem('sbi_v64_bookings')) || [];
 
-        function showRoomManager() { renderRoomList(); new bootstrap.Modal(document.getElementById('roomManagerModal')).show(); }
+        function showRoomManager() { 
+            document.getElementById('editIndex').value = "-1";
+            document.getElementById('newRoomName').value = "";
+            renderRoomList(); 
+            new bootstrap.Modal(document.getElementById('roomManagerModal')).show(); 
+        }
 
-        // FUNGSI CRUD RUANGAN
         function saveRoom() {
             const name = document.getElementById('newRoomName').value;
             const editIdx = parseInt(document.getElementById('editIndex').value);
+            if(!name) return alert("Nama wajib!");
+
             const data = { 
                 nama: name.toUpperCase(), 
                 cap: document.getElementById('newRoomCap').value || "-", 
                 fac: document.getElementById('newRoomFac').value || "-" 
             };
 
-            if(!name) return alert("Nama wajib!");
             if(editIdx === -1) rooms.push(data); else rooms[editIdx] = data;
 
-            localStorage.setItem('sbi_v6_rooms', JSON.stringify(rooms));
+            localStorage.setItem('sbi_v64_rooms', JSON.stringify(rooms));
             document.getElementById('editIndex').value = "-1";
             document.getElementById('newRoomName').value = "";
+            document.getElementById('newRoomCap').value = "";
+            document.getElementById('newRoomFac').value = "";
             renderRoomList(); refreshAll();
         }
 
@@ -169,52 +182,59 @@
         }
 
         function deleteRoom(i) {
-            rooms.splice(i, 1);
-            localStorage.setItem('sbi_v6_rooms', JSON.stringify(rooms));
-            renderRoomList(); refreshAll();
+            if(confirm('Hapus ruangan?')) {
+                rooms.splice(i, 1);
+                localStorage.setItem('sbi_v64_rooms', JSON.stringify(rooms));
+                renderRoomList(); refreshAll();
+            }
         }
 
         function renderRoomList() {
             document.getElementById('roomListContainer').innerHTML = rooms.map((r, i) => `
-                <div class="d-flex justify-content-between p-2 border-bottom border-secondary small">
-                    <div><b>${r.nama}</b><br>${r.cap}</div>
+                <div class="d-flex justify-content-between p-3 border-bottom border-secondary small">
+                    <div><b class="text-info">${r.nama}</b><br>${r.cap} | ${r.fac}</div>
                     <div>
-                        <button class="btn btn-sm btn-info" onclick="editRoom(${i})"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteRoom(${i})"><i class="fas fa-trash"></i></button>
+                        <button class="btn btn-sm btn-outline-info me-1" onclick="editRoom(${i})"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteRoom(${i})"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // FUNGSI STATUS (YANG TADI BERMASALAH)
         function setStatus(id, newStatus) {
-            // 1. Cari data di array
             const idx = bookings.findIndex(b => b.id === id);
             if(idx !== -1) {
-                // 2. Ganti statusnya
                 bookings[idx].status = newStatus;
-                // 3. Simpan ke database browser
-                localStorage.setItem('sbi_v6_bookings', JSON.stringify(bookings));
-                // 4. Catat Log
-                logAction(`Status ${bookings[idx].nama} -> ${newStatus}`);
-                // 5. GAMBAR ULANG TABEL (Supaya langsung berubah di layar)
+                localStorage.setItem('sbi_v64_bookings', JSON.stringify(bookings));
+                logAction(`Status: ${bookings[idx].nama} set to ${newStatus}`);
+                refreshAll();
+            }
+        }
+
+        function deleteBooking(id) {
+            if(confirm('Hapus data traffic ini?')) {
+                bookings = bookings.filter(b => b.id !== id);
+                localStorage.setItem('sbi_v64_bookings', JSON.stringify(bookings));
                 refreshAll();
             }
         }
 
         function refreshAll() {
-            // Update Dropdown Ruangan
             document.getElementById('ruangan').innerHTML = rooms.map(r => `<option value="${r.nama}">${r.nama}</option>`).join('');
-            
-            // Render Tabel Utama
+            updateRoomInfo();
+
             document.getElementById('mainTable').innerHTML = bookings.map(b => `
                 <tr>
                     <td><b>${b.nama}</b><br><small class="text-muted">${b.waktu}</small></td>
-                    <td><span class="text-info">${b.ruangan}</span></td>
+                    <td><span class="text-info fw-bold">${b.ruangan}</span></td>
                     <td><span class="st-pill st-${b.status.toLowerCase()}">${b.status}</span></td>
                     <td class="text-end">
-                        <button class="btn-action bg-success" onclick="setStatus(${b.id}, 'APPROVED')"><i class="fas fa-check"></i></button>
-                        <button class="btn-action bg-danger" onclick="setStatus(${b.id}, 'REJECTED')"><i class="fas fa-times"></i></button>
+                        ${b.status === 'PENDING' ? `
+                            <button class="btn-action bg-success" title="Approve" onclick="setStatus(${b.id}, 'APPROVED')"><i class="fas fa-check"></i></button>
+                            <button class="btn-action bg-danger" title="Reject" onclick="setStatus(${b.id}, 'REJECTED')"><i class="fas fa-times"></i></button>
+                        ` : `
+                            <button class="btn-action bg-secondary" title="Delete" onclick="deleteBooking(${b.id})"><i class="fas fa-trash"></i></button>
+                        `}
                     </td>
                 </tr>
             `).join('');
@@ -225,31 +245,32 @@
         document.getElementById('bookingForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const data = {
-                id: Date.now(), // ID UNIK
+                id: Date.now(),
                 nama: document.getElementById('nama').value.toUpperCase(),
                 ruangan: document.getElementById('ruangan').value,
                 waktu: document.getElementById('tglMulai').value.replace('T', ' '),
                 status: "PENDING"
             };
             bookings.unshift(data);
-            localStorage.setItem('sbi_v6_bookings', JSON.stringify(bookings));
-            logAction(`New Booking: ${data.nama}`);
+            localStorage.setItem('sbi_v64_bookings', JSON.stringify(bookings));
+            logAction(`New Node Deployed: ${data.nama}`);
             refreshAll();
             this.reset();
         });
+
+        function updateRoomInfo() {
+            const r = rooms.find(x => x.nama === document.getElementById('ruangan').value);
+            document.getElementById('roomDetail').innerHTML = r ? 
+                `<b>CAP:</b> ${r.cap} <br> <b>FAC:</b> ${r.fac}` : "Pilih ruangan...";
+        }
 
         function logAction(m) {
             const log = document.getElementById('activityLog');
             log.innerHTML = `<div class="log-entry">> [${new Date().toLocaleTimeString()}] ${m}</div>` + log.innerHTML;
         }
 
-        function updateRoomInfo() {
-            const r = rooms.find(x => x.nama === document.getElementById('ruangan').value);
-            document.getElementById('roomDetail').innerHTML = r ? `Cap: ${r.cap} | Fac: ${r.fac}` : "";
-        }
-
         refreshAll();
-        logAction("SBI System Ready.");
+        logAction("System Initialized. Operational.");
     </script>
 </body>
 </html>
