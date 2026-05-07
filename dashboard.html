@@ -3,89 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DASHBOARD | OPS.CENTER</title>
+    <title>DASHBOARD | IT OPS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
     <style>
-        :root { --primary: #00f2ff; --bg: #020617; --card: #0f172a; --border: #1e293b; }
-        body { background: var(--bg); color: white; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .sidebar { background: var(--card); border-right: 1px solid var(--border); height: 100vh; padding: 2rem; position: fixed; width: 280px; }
-        .main-content { margin-left: 280px; padding: 3rem; }
-        .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; }
-        .stat-val { font-family: 'JetBrains Mono'; font-size: 2rem; color: var(--primary); }
-        #qrcode img { border: 4px solid white; border-radius: 8px; margin-top: 10px; }
+        :root { --primary: #00f2ff; --secondary: #7000ff; --bg-deep: #020617; --card-bg: #0f172a; --border: #1e293b; --text-main: #f8fafc; }
+        body { background: var(--bg-deep); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        /* Sidebar Layout */
+        .sidebar { width: 280px; position: fixed; height: 100vh; background: #070b17; border-right: 1px solid var(--border); padding: 2rem; z-index: 100; }
+        .main-content { margin-left: 280px; padding: 2rem; }
+
+        /* UI Components dari tampilan sebelumnya */
+        .glass-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; position: relative; overflow: hidden; margin-bottom: 1.5rem; }
+        .glass-card::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--primary), var(--secondary)); }
+        
+        .stat-label { font-size: 0.7rem; text-transform: uppercase; color: #94a3b8; font-weight: 700; letter-spacing: 0.1em; }
+        .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+
+        .form-control, .form-select { background: #1e293b; border: 1px solid var(--border); color: white; border-radius: 10px; }
+        .btn-it { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; font-weight: 700; border-radius: 10px; transition: 0.3s; }
+        
+        .badge-it { padding: 4px 10px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; font-family: 'JetBrains Mono'; border: 1px solid currentColor; }
+        .status-pending { color: #eab308; } .status-approved { color: #22c55e; } .status-rejected { color: #ef4444; }
+        
+        #qrcode img { border: 5px solid white; border-radius: 10px; margin: 10px auto; }
     </style>
 </head>
 <body>
+
     <script>
-        // Security Check: Jika belum login, tendang balik ke index.html
+        // PROTEKSI HALAMAN: Balikin ke login kalau belum sah
         if(localStorage.getItem('isLoggedIn') !== 'true') window.location.href = "index.html";
-        function logout() { localStorage.removeItem('isLoggedIn'); window.location.href = "index.html"; }
     </script>
 
     <div class="sidebar d-flex flex-column">
-        <div class="brand mb-5 fs-4 fw-bold text-info">OPS.CENTER</div>
+        <div class="brand-logo fs-4 fw-bold text-info mb-5">OPS.CENTER</div>
+        
         <div class="mb-auto">
-            <p class="small text-muted fw-bold">MENU</p>
-            <div class="nav flex-column">
-                <a href="#" class="nav-link text-white px-0 py-2"><i class="fas fa-home me-2"></i> Dashboard Overview</a>
-                <a href="display.html" class="nav-link text-white-50 px-0 py-2">TV Monitoring</a>
+            <div class="glass-card text-center p-2">
+                <p class="stat-label mb-1">SCAN TO BOOK</p>
+                <div id="qrcode" class="d-flex justify-content-center"></div>
+                <p class="small text-muted mt-2" style="font-size: 0.6rem;">Share link ini ke user</p>
             </div>
         </div>
-        
-        <div class="glass-card p-3 mb-4 text-center">
-            <p class="small text-muted mb-2">USER_BOOKING_LINK</p>
-            <div id="qrcode" class="d-flex justify-content-center"></div>
-        </div>
 
-        <button onclick="logout()" class="btn btn-outline-danger w-100">LOGOUT SYSTEM</button>
+        <button onclick="localStorage.removeItem('isLoggedIn'); window.location.href='index.html';" class="btn btn-outline-danger btn-sm w-100">TERMINATE SESSION</button>
     </div>
 
     <div class="main-content">
-        <div class="d-flex justify-content-between align-items-center mb-5">
-            <div>
-                <h2 class="fw-bold">Welcome, Administrator</h2>
-                <p class="text-muted">Monitoring operational room booking secara real-time.</p>
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="glass-card">
+                    <div class="stat-label">System Waiting</div>
+                    <div class="stat-value" id="statPending">00</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card">
+                    <div class="stat-label">Active Bookings</div>
+                    <div class="stat-value" id="statApproved" style="color: #22c55e">00</div>
+                </div>
+            </div>
+            <div class="col-md-4 text-end">
+                <a href="display.html" target="_blank" class="btn btn-it px-4 mt-3">TV MONITORING FEED</a>
             </div>
         </div>
 
-        <div class="row g-4 mb-5">
-            <div class="col-md-4">
+        <div class="row">
+            <div class="col-lg-4">
                 <div class="glass-card">
-                    <p class="small text-muted">TOTAL RESERVATION</p>
-                    <div class="stat-val">128</div>
+                    <h6 class="fw-bold mb-4 text-primary"><i class="fas fa-plus-square me-2"></i>NEW RESERVATION</h6>
+                    <form id="bookingForm">
+                        <div class="mb-3">
+                            <label class="stat-label">Requester Name</label>
+                            <input type="text" id="nama" class="form-control" placeholder="Nama Lengkap" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="stat-label">Target Room</label>
+                            <select id="ruangan" class="form-select" required></select>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6"><input type="date" id="tglMulai" class="form-control" required></div>
+                            <div class="col-6"><input type="date" id="tglSelesai" class="form-control" required></div>
+                        </div>
+                        <div class="row g-2 mb-4">
+                            <div class="col-6"><input type="time" id="jamMulai" class="form-control" required></div>
+                            <div class="col-6"><input type="time" id="jamSelesai" class="form-control" required></div>
+                        </div>
+                        <button type="submit" class="btn btn-it w-100 py-2">EXECUTE BOOKING</button>
+                    </form>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="glass-card">
-                    <p class="small text-muted">WAITING APPROVAL</p>
-                    <div class="stat-val text-warning">03</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="glass-card">
-                    <p class="small text-muted">SYSTEM STATUS</p>
-                    <div class="stat-val text-success">HEALTHY</div>
-                </div>
-            </div>
-        </div>
 
-        <div class="glass-card">
-            <h5 class="fw-bold mb-4">LATEST TRAFFIC LOGS</h5>
-            <table class="table table-dark">
-                <thead><tr class="small text-muted"><th>IDENTIFIER</th><th>ROOM</th><th>TIME</th><th>STATUS</th></tr></thead>
-                <tbody>
-                    <tr><td>BAMBANG SANTOSO</td><td>SERVER ROOM A</td><td>08:55 WIB</td><td><span class="badge bg-success">APPROVED</span></td></tr>
-                </tbody>
-            </table>
+            <div class="col-lg-8">
+                <div class="glass-card">
+                    <h6 class="fw-bold mb-4 text-primary"><i class="fas fa-database me-2"></i>TRAFFIC_LOGS</h6>
+                    <div class="table-responsive">
+                        <table class="table table-dark">
+                            <thead class="stat-label">
+                                <tr><th>IDENTIFIER</th><th>ROOM</th><th>TIMEFRAME</th><th>STATUS</th><th class="text-end">OP</th></tr>
+                            </thead>
+                            <tbody id="daftarBooking" style="font-size: 0.8rem;">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
+    <script src="script.js"></script>
     <script>
+        // Generate QR Code otomatis
         new QRCode(document.getElementById("qrcode"), {
-            text: "https://lutfihadi160202.github.io/booking-form", // Link ke form booking khusus user
-            width: 120, height: 120
+            text: window.location.href.replace('dashboard.html', 'index.html'),
+            width: 100, height: 100
         });
     </script>
 </body>
