@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SBI | IT OPS - SMART MONITORING V7.4</title>
+    <title>SBI | IT OPS - FINAL STABLE V7.5</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,27 +13,28 @@
 
         body { background: var(--bg-deep); color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
 
-        /* SIDEBAR NAVIGATION */
-        .sidebar { width: 280px; position: fixed; height: 100vh; background: rgba(7, 11, 23, 0.95); border-right: 1px solid var(--border-glow); display: flex; flex-direction: column; z-index: 100; }
-        .sidebar-header { padding: 2.5rem 1.5rem; }
-        .logo-text { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; font-weight: 700; }
+        /* SIDEBAR FIX */
+        .sidebar { width: 280px; position: fixed; height: 100vh; background: rgba(7, 11, 23, 0.98); border-right: 1px solid var(--border-glow); display: flex; flex-direction: column; z-index: 1000; }
+        .sidebar-header { padding: 2.5rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .logo-text { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; font-weight: 700; color: white; }
         
-        .nav-menu { flex-grow: 1; padding: 0 15px; }
-        .nav-link { color: #94a3b8 !important; border-radius: 12px; padding: 14px 18px; margin-bottom: 5px; cursor: pointer; transition: 0.3s; text-decoration: none; display: flex; align-items: center; font-weight: 600; }
+        .nav-menu { flex-grow: 1; padding: 20px 15px; }
+        .nav-link { color: #94a3b8 !important; border-radius: 12px; padding: 14px 18px; margin-bottom: 8px; cursor: pointer; transition: 0.3s; text-decoration: none; display: flex; align-items: center; font-weight: 600; }
         .nav-link:hover, .nav-link.active { background: rgba(0, 242, 255, 0.1); color: var(--neon-blue) !important; }
 
-        .sidebar-footer { padding: 20px; border-top: 1px solid rgba(255,255,255,0.05); }
-        .btn-logout { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #ef4444; color: #ef4444; background: transparent; transition: 0.3s; font-weight: 700; }
-        .btn-logout:hover { background: #ef4444; color: white; }
+        .sidebar-footer { padding: 25px 20px; background: rgba(0,0,0,0.2); }
+        .btn-logout { width: 100%; padding: 14px; border-radius: 14px; border: 2px solid #ef4444; color: #ef4444; background: transparent; transition: 0.3s; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-logout:hover { background: #ef4444; color: white; box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
 
         /* MAIN CONTENT */
         .main-content { margin-left: 280px; padding: 3rem; }
         .glass-card { background: var(--card-glass); border: 1px solid var(--border-glow); border-radius: 24px; padding: 2rem; backdrop-filter: blur(12px); margin-bottom: 2rem; }
 
-        /* MODAL FIX */
-        .modal-content { background: #0f172a !important; border: 1px solid var(--neon-blue) !important; border-radius: 25px; }
-        .modal input, .modal textarea { background: #1e293b !important; border: 1px solid #334155 !important; color: white !important; }
-        .modal input::placeholder { color: #64748b; }
+        /* MODAL FIX - TEXT HARUS PUTIH */
+        .modal-content { background: #0f172a !important; border: 1px solid var(--neon-blue) !important; border-radius: 25px; color: white !important; }
+        .modal-header { border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .modal input, .modal textarea { background: #1e293b !important; border: 1px solid #334155 !important; color: white !important; padding: 12px; }
+        .modal label { color: #94a3b8; font-size: 0.8rem; margin-bottom: 5px; font-weight: 600; }
 
         /* TABLES */
         .table { color: #f8fafc !important; }
@@ -44,30 +45,30 @@
 
     <div class="sidebar">
         <div class="sidebar-header">
-            <h3 class="logo-text m-0 text-white">SBI <span class="text-info">HUB</span></h3>
-            <p class="text-muted small">Infrastructure Control</p>
+            <h3 class="logo-text m-0">SBI <span class="text-info">HUB</span></h3>
+            <p class="text-muted small m-0">ADMIN TERMINAL v7.5</p>
         </div>
         
         <div class="nav-menu">
             <div class="nav-link active" onclick="location.reload()"><i class="fas fa-th-large me-3"></i> Dashboard</div>
-            <div class="nav-link" onclick="showRoomManager()"><i class="fas fa-server me-3"></i> Master Nodes</div>
-            <div class="nav-link" onclick="openTVMode()"><i class="fas fa-tv me-3"></i> TV Display Mode</div>
+            <div class="nav-link" onclick="showRoomManager()"><i class="fas fa-server me-3"></i> Master Room</div>
+            <div class="nav-link" onclick="openTVMode()"><i class="fas fa-desktop me-3"></i> Monitoring TV</div>
         </div>
 
         <div class="sidebar-footer">
-            <button class="btn-logout" onclick="handleLogout()"><i class="fas fa-power-off me-2"></i> TERMINATE SESSION</button>
+            <button class="btn-logout" onclick="handleLogout()"><i class="fas fa-sign-out-alt me-2"></i> LOGOUT</button>
         </div>
     </div>
 
     <div class="main-content">
         <div class="row align-items-center mb-5">
             <div class="col">
-                <h1 class="fw-black m-0" style="font-size: 2.5rem;">RESOURCE <span class="text-info">TRAFFIC</span></h1>
-                <p class="text-secondary">System Admin Operations Hub v7.4</p>
+                <h1 class="fw-black m-0" style="font-size: 2.5rem;">SBI <span class="text-info">TRAFFIC</span></h1>
+                <p class="text-secondary">Security & Infrastructure Control Center</p>
             </div>
-            <div class="col-auto text-end">
-                <div class="p-3 bg-dark border border-info rounded-4" style="min-width: 150px;">
-                    <small class="text-info d-block">ACTIVE NODE</small>
+            <div class="col-auto">
+                <div class="p-3 bg-dark border border-info rounded-4 text-center" style="min-width: 160px;">
+                    <small class="text-info d-block fw-bold">ACTIVE SESSIONS</small>
                     <h2 class="m-0 fw-bold" id="statApproved">0</h2>
                 </div>
             </div>
@@ -76,31 +77,31 @@
         <div class="row">
             <div class="col-xl-4">
                 <div class="glass-card">
-                    <h5 class="text-info mb-4">NEW DEPLOYMENT</h5>
+                    <h5 class="text-info mb-4 fw-bold"><i class="fas fa-plus-circle me-2"></i>NEW BOOKING</h5>
                     <form id="bookingForm">
                         <div class="mb-3">
-                            <label class="small text-secondary mb-1">Requester Name</label>
-                            <input type="text" id="nama" class="form-control bg-dark border-secondary text-white py-2" placeholder="User/Dept" required>
+                            <label class="small text-secondary">User/Department</label>
+                            <input type="text" id="nama" class="form-control bg-dark border-secondary text-white" placeholder="Input Name..." required>
                         </div>
                         <div class="mb-3">
-                            <label class="small text-secondary mb-1">Target Room</label>
-                            <select id="ruangan" class="form-select bg-dark border-secondary text-white py-2" onchange="updateRoomInfo()"></select>
+                            <label class="small text-secondary">Target Room</label>
+                            <select id="ruangan" class="form-select bg-dark border-secondary text-white" onchange="updateRoomInfo()"></select>
                         </div>
                         <div id="roomDetail" class="small mb-4 p-3 rounded-4 bg-black border border-secondary text-info"></div>
                         <div class="row g-2 mb-4">
-                            <div class="col-6"><label class="small text-secondary">Start Cycle</label><input type="datetime-local" id="tglMulai" class="form-control bg-dark border-secondary text-white" required></div>
-                            <div class="col-6"><label class="small text-secondary">End Cycle</label><input type="datetime-local" id="tglSelesai" class="form-control bg-dark border-secondary text-white" required></div>
+                            <div class="col-6"><label class="small text-secondary">Start</label><input type="datetime-local" id="tglMulai" class="form-control bg-dark border-secondary text-white" required></div>
+                            <div class="col-6"><label class="small text-secondary">End</label><input type="datetime-local" id="tglSelesai" class="form-control bg-dark border-secondary text-white" required></div>
                         </div>
-                        <button type="submit" class="btn btn-info w-100 py-3 text-white fw-bold" style="border-radius:15px; background: linear-gradient(135deg, #00f2ff, #7000ff); border:none;">SUBMIT DEPLOYMENT</button>
+                        <button type="submit" class="btn btn-info w-100 py-3 text-dark fw-bold">EXECUTE SYSTEM</button>
                     </form>
                 </div>
             </div>
 
             <div class="col-xl-8">
                 <div class="glass-card">
-                    <h5 class="text-secondary mb-4">LIVE TRAFFIC MONITOR</h5>
+                    <h5 class="text-secondary mb-4 fw-bold"><i class="fas fa-list me-2"></i>ACTIVITY LOG</h5>
                     <table class="table align-middle">
-                        <thead><tr class="text-secondary border-secondary"><th>IDENTIFIER</th><th>ROOM</th><th>STATUS</th><th class="text-end">ACTION</th></tr></thead>
+                        <thead><tr class="text-secondary"><th>IDENTIFIER</th><th>ROOM</th><th>STATUS</th><th class="text-end">ACTION</th></tr></thead>
                         <tbody id="mainTable"></tbody>
                     </table>
                 </div>
@@ -113,19 +114,29 @@
             <div class="modal-content">
                 <div class="modal-body p-5">
                     <div class="d-flex justify-content-between mb-4">
-                        <h4 class="logo-text text-info m-0">MASTER DATABASE</h4>
+                        <h4 class="logo-text text-info m-0">ROOM DATABASE</h4>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="row g-4">
-                        <div class="col-md-5">
+                        <div class="col-md-5 border-end border-secondary pe-4">
                             <input type="hidden" id="editIndex" value="-1">
-                            <input type="text" id="newRoomName" class="form-control mb-2 py-2" placeholder="Room Name">
-                            <input type="text" id="newRoomCap" class="form-control mb-2 py-2" placeholder="Capacity">
-                            <textarea id="newRoomFac" class="form-control mb-3" rows="3" placeholder="Facilities..."></textarea>
-                            <button onclick="saveRoom()" class="btn btn-info w-100 py-2 text-white">SAVE TO DB</button>
+                            <div class="mb-3">
+                                <label>Room Designation</label>
+                                <input type="text" id="newRoomName" class="form-control" placeholder="Room Name">
+                            </div>
+                            <div class="mb-3">
+                                <label>Max Capacity</label>
+                                <input type="text" id="newRoomCap" class="form-control" placeholder="Capacity">
+                            </div>
+                            <div class="mb-4">
+                                <label>Assets/Facilities</label>
+                                <textarea id="newRoomFac" class="form-control" rows="3" placeholder="Facilities..."></textarea>
+                            </div>
+                            <button onclick="saveRoom()" class="btn btn-info w-100 py-3 text-dark fw-bold">SAVE TO DATABASE</button>
                         </div>
-                        <div class="col-md-7">
-                            <div id="roomListContainer" style="max-height: 300px; overflow-y: auto;"></div>
+                        <div class="col-md-7 ps-4">
+                            <label class="text-info mb-3 fw-bold">REGISTERED NODES</label>
+                            <div id="roomListContainer" style="max-height: 350px; overflow-y: auto;"></div>
                         </div>
                     </div>
                 </div>
@@ -135,41 +146,39 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let rooms = JSON.parse(localStorage.getItem('sbi_v72_rooms')) || [
-            { nama: "WAR ROOM", cap: "12 Pax", fac: "Fiber, AC, TV" },
-            { nama: "SERVER ROOM A", cap: "Restricted", fac: "Biometric" }
-        ];
-        let bookings = JSON.parse(localStorage.getItem('sbi_v72_bookings')) || [];
+        let rooms = JSON.parse(localStorage.getItem('sbi_v75_rooms')) || [{ nama: "MEETING ROOM A", cap: "12 Pax", fac: "Wifi, AC" }];
+        let bookings = JSON.parse(localStorage.getItem('sbi_v75_bookings')) || [];
 
-        // FUNGSI BARU: BUKA TV DISPLAY DI TAB TERPISAH
-        function openTVMode() {
-            const tvWindow = window.open("", "SBI_TV_DISPLAY", "width=1200,height=800");
-            const active = bookings.filter(b => b.status === 'APPROVED');
-            const occupied = active.map(b => b.ruangan);
-            const available = rooms.filter(r => !occupied.includes(r.nama));
-
-            tvWindow.document.write(`
-                <html><head><title>SBI LIVE MONITOR</title>
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-                <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
-                <style>
-                    body { background: #020617; color: white; font-family: sans-serif; padding: 40px; }
-                    .card-in-use { background: #0f172a; border-left: 10px solid #00f2ff; padding: 20px; border-radius: 15px; margin-bottom: 15px; }
-                    .card-empty { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 1px dashed #334155; }
-                    .logo { font-family: 'Orbitron'; font-size: 2.5rem; color: #00f2ff; margin-bottom: 40px; border-bottom: 2px solid #1e293b; padding-bottom: 20px; }
-                </style></head><body>
-                <div class="logo">SBI <span style="color:white">LIVE MONITORING</span></div>
-                <div class="row">
-                    <div class="col-7"><h3>IN USE</h3>${active.map(b => `<div class="card-in-use"><h2>${b.ruangan}</h2><p>USER: ${b.nama}</p></div>`).join('')}</div>
-                    <div class="col-5"><h3>AVAILABLE</h3>${available.map(r => `<div class="card-empty"><h4>${r.nama}</h4><p style="color:#10b981">READY</p></div>`).join('')}</div>
-                </div>
-                <script>setInterval(() => location.reload(), 10000);<\/script>
-                </body></html>
-            `);
-            tvWindow.document.close();
+        // LOGOUT KE LOGIN.PHP
+        function handleLogout() {
+            if(confirm("Apakah anda yakin ingin keluar dari sistem?")) {
+                window.location.href = "proses_logout.php"; // Sesuaikan dengan file logout PHP kamu
+            }
         }
 
-        function handleLogout() { if(confirm("Terminate session?")) location.reload(); }
+        // TV MODE (NEW TAB)
+        function openTVMode() {
+            const win = window.open("", "_blank");
+            const active = bookings.filter(b => b.status === 'APPROVED');
+            const avail = rooms.filter(r => !active.map(x => x.ruangan).includes(r.nama));
+
+            win.document.write(`
+                <html><head><title>SBI MONITORING</title>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                <style>
+                    body { background: #020617; color: white; font-family: sans-serif; padding: 50px; }
+                    .box { background: #0f172a; border-left: 10px solid #00f2ff; border-radius: 15px; padding: 25px; margin-bottom: 20px; }
+                    .ready { background: rgba(255,255,255,0.05); border: 1px dashed #334155; padding: 20px; border-radius: 15px; margin-bottom: 10px; }
+                </style></head><body>
+                <h1 style="color:#00f2ff; border-bottom: 2px solid #334155; padding-bottom: 20px;">SBI LIVE MONITOR</h1>
+                <div class="row mt-4">
+                    <div class="col-7"><h3>IN USE</h3>${active.map(b => `<div class="box"><h1>${b.ruangan}</h1><h4>USER: ${b.nama}</h4></div>`).join('')}</div>
+                    <div class="col-5"><h3>AVAILABLE</h3>${avail.map(r => `<div class="ready"><h5>${r.nama}</h5><small class="text-success">READY</small></div>`).join('')}</div>
+                </div>
+                <script>setInterval(() => location.reload(), 15000);<\/script></body></html>
+            `);
+        }
+
         function showRoomManager() { renderRoomList(); new bootstrap.Modal(document.getElementById('roomManagerModal')).show(); }
 
         function saveRoom() {
@@ -178,25 +187,25 @@
             const data = { nama: name.toUpperCase(), cap: document.getElementById('newRoomCap').value, fac: document.getElementById('newRoomFac').value };
             const editIdx = parseInt(document.getElementById('editIndex').value);
             if(editIdx === -1) rooms.push(data); else rooms[editIdx] = data;
-            localStorage.setItem('sbi_v72_rooms', JSON.stringify(rooms));
+            localStorage.setItem('sbi_v75_rooms', JSON.stringify(rooms));
             document.getElementById('newRoomName').value = ""; document.getElementById('editIndex').value = "-1";
             renderRoomList(); refreshAll();
         }
 
-        function deleteRoom(i) { rooms.splice(i, 1); localStorage.setItem('sbi_v72_rooms', JSON.stringify(rooms)); renderRoomList(); refreshAll(); }
+        function deleteRoom(i) { rooms.splice(i, 1); localStorage.setItem('sbi_v75_rooms', JSON.stringify(rooms)); renderRoomList(); refreshAll(); }
 
         function renderRoomList() {
             document.getElementById('roomListContainer').innerHTML = rooms.map((r, i) => `
                 <div class="p-3 mb-2 bg-black rounded border border-secondary d-flex justify-content-between align-items-center">
                     <div><b class="text-info">${r.nama}</b><br><small class="text-secondary">${r.cap}</small></div>
-                    <button class="btn btn-sm btn-outline-danger" onclick="deleteRoom(${i})"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="deleteRoom(${i})"><i class="fas fa-trash text-danger"></i></button>
                 </div>
             `).join('');
         }
 
         function setStatus(id, s) {
             const i = bookings.findIndex(b => b.id === id);
-            if(i !== -1) { bookings[i].status = s; localStorage.setItem('sbi_v72_bookings', JSON.stringify(bookings)); refreshAll(); }
+            if(i !== -1) { bookings[i].status = s; localStorage.setItem('sbi_v75_bookings', JSON.stringify(bookings)); refreshAll(); }
         }
 
         function refreshAll() {
@@ -210,7 +219,7 @@
                         ${b.status === 'PENDING' ? `
                             <button class="btn btn-sm btn-success me-1" onclick="setStatus(${b.id}, 'APPROVED')"><i class="fas fa-check"></i></button>
                             <button class="btn btn-sm btn-danger" onclick="setStatus(${b.id}, 'REJECTED')"><i class="fas fa-times"></i></button>
-                        ` : `<button class="btn btn-sm btn-secondary" onclick="bookings = bookings.filter(x => x.id !== ${b.id}); localStorage.setItem('sbi_v72_bookings', JSON.stringify(bookings)); refreshAll();"><i class="fas fa-trash"></i></button>`}
+                        ` : `<button class="btn btn-sm btn-secondary" onclick="bookings = bookings.filter(x => x.id !== ${b.id}); localStorage.setItem('sbi_v75_bookings', JSON.stringify(bookings)); refreshAll();"><i class="fas fa-trash"></i></button>`}
                     </td>
                 </tr>
             `).join('');
@@ -221,7 +230,7 @@
         document.getElementById('bookingForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const data = { id: Date.now(), nama: document.getElementById('nama').value.toUpperCase(), ruangan: document.getElementById('ruangan').value, waktu: document.getElementById('tglMulai').value.replace('T', ' '), status: "PENDING" };
-            bookings.unshift(data); localStorage.setItem('sbi_v72_bookings', JSON.stringify(bookings)); refreshAll(); this.reset();
+            bookings.unshift(data); localStorage.setItem('sbi_v75_bookings', JSON.stringify(bookings)); refreshAll(); this.reset();
         });
 
         function updateRoomInfo() {
